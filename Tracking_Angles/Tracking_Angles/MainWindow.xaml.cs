@@ -6,6 +6,7 @@ using Microsoft.Kinect;
 using System;
 using System.Windows.Shapes;
 using System.Windows.Controls;
+using System.Windows.Media.Media3D;
 
 namespace Tracking_Angles
 {
@@ -90,30 +91,6 @@ namespace Tracking_Angles
                 }
             }
 
-            //// Depth
-            //using (var frame = reference.DepthFrameReference.AcquireFrame())
-            //{
-            //    if (frame != null)
-            //    {
-            //        if (_mode == Mode.Depth)
-            //        {
-            //            camera.Source = frame.ToBitmap();
-            //        }
-            //    }
-            //}
-
-            //// Infrared
-            //using (var frame = reference.InfraredFrameReference.AcquireFrame())
-            //{
-            //    if (frame != null)
-            //    {
-            //        if (_mode == Mode.Infrared)
-            //        {
-            //            camera.Source = frame.ToBitmap();
-            //        }
-            //    }
-            //}
-
             // Body joints
             using (var frame = reference.BodyFrameReference.AcquireFrame())
             {
@@ -131,6 +108,17 @@ namespace Tracking_Angles
                         {
                             if (body.IsTracked)
                             {
+                                Vector3D ElbowLeft = new Vector3D(body.Joints[JointType.ElbowLeft].Position.X, body.Joints[JointType.ElbowLeft].Position.Y, body.Joints[JointType.ElbowLeft].Position.Z);
+                                Vector3D WristLeft = new Vector3D(body.Joints[JointType.WristLeft].Position.X, body.Joints[JointType.WristLeft].Position.Y, body.Joints[JointType.WristLeft].Position.Z);
+                                Vector3D ShoulderLeft = new Vector3D(body.Joints[JointType.ShoulderLeft].Position.X, body.Joints[JointType.ShoulderLeft].Position.Y, body.Joints[JointType.ShoulderLeft].Position.Z);
+
+                                Vector3D Head = new Vector3D(body.Joints[JointType.Head].Position.X, body.Joints[JointType.Head].Position.Y, body.Joints[JointType.Head].Position.Z);
+                                Vector3D Neck = new Vector3D(body.Joints[JointType.Neck].Position.X, body.Joints[JointType.Neck].Position.Y, body.Joints[JointType.Neck].Position.Z);
+                                Vector3D SpineShoulder = new Vector3D(body.Joints[JointType.SpineShoulder].Position.X, body.Joints[JointType.SpineShoulder].Position.Y, body.Joints[JointType.SpineShoulder].Position.Z);
+
+                                double LeftElbowAngle = AngleBetweenTwoVectors(ElbowLeft - ShoulderLeft, ElbowLeft - WristLeft);
+                                double NeckAngle = AngleBetweenTwoVectors(Neck - Head, Neck - SpineShoulder);
+
                                 // Draw skeleton.
                                 if (_displayBody)
                                 {
@@ -185,20 +173,16 @@ namespace Tracking_Angles
             }
         }
 
-        //private void Color_Click(object sender, RoutedEventArgs e)
-        //{
-        //    _mode = Mode.Color;
-        //}
+        // Calculate angles
+        public double AngleBetweenTwoVectors(Vector3D vectorA, Vector3D vectorB)
+        {
+            double dotProduct = 0.0;
+            vectorA.Normalize();
+            vectorB.Normalize();
+            dotProduct = Vector3D.DotProduct(vectorA, vectorB);
 
-        //private void Depth_Click(object sender, RoutedEventArgs e)
-        //{
-        //    _mode = Mode.Depth;
-        //}
-
-        //private void Infrared_Click(object sender, RoutedEventArgs e)
-        //{
-        //    _mode = Mode.Infrared;
-        //}
+            return (double)Math.Acos(dotProduct) / Math.PI * 180;
+        }
 
         private void Tracking_Click(object sender, RoutedEventArgs e)
         {
