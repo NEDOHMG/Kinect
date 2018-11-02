@@ -13,8 +13,6 @@ namespace Tracking_Angles
     public enum Mode
     {
         Color,
-        Depth,
-        Infrared
     }
 
     /// <summary>
@@ -32,9 +30,11 @@ namespace Tracking_Angles
         // Create and object to read the incoming frames
         MultiSourceFrameReader _reader;
         // Create a list to save the ID of the tracked bodys
-        IList<Body> _bodies;
+        private Body[] _bodies;
 
         bool _displayBody = false;
+
+        private int activeBodyIndex = -1; // Default to impossible value.
 
         #endregion
 
@@ -58,10 +58,7 @@ namespace Tracking_Angles
             {
                 _sensor.Open();
                 // Read the streams
-                _reader = _sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color
-                                                            | FrameSourceTypes.Depth
-                                                            | FrameSourceTypes.Infrared
-                                                            | FrameSourceTypes.Body);
+                _reader = _sensor.OpenMultiSourceFrameReader(FrameSourceTypes.Color | FrameSourceTypes.Body);
                 _reader.MultiSourceFrameArrived += Reader_MultiSourceFrameArrived;
             }
 
@@ -80,7 +77,13 @@ namespace Tracking_Angles
             var reference = e.FrameReference.AcquireFrame();
 
             // Text block variables
-            string angleLeftElbow = "Null";
+            string angleLeftAnkle = "Null";
+            string angleLeftKnee = "Null";
+            string angleLeftHip = "Null";
+            string angleRightAnkle = "Null";
+            string angleRightKnee = "Null";
+            string angleRightHip = "Null";
+
 
             // Color
             using (var frame = reference.ColorFrameReference.AcquireFrame())
@@ -97,6 +100,7 @@ namespace Tracking_Angles
             // Body joints
             using (var frame = reference.BodyFrameReference.AcquireFrame())
             {
+
                 if (frame != null)
                 {
                     canvas.Children.Clear();
@@ -105,74 +109,119 @@ namespace Tracking_Angles
 
                     frame.GetAndRefreshBodyData(_bodies);
 
-                    foreach (var body in _bodies)
+                    // Check activeBodyIndex is still active
+                    if (activeBodyIndex != -1)
                     {
-                        if (body != null)
+                        Body body_Index = _bodies[activeBodyIndex];
+                        if (!body_Index.IsTracked)
                         {
-                            if (body.IsTracked)
+                            activeBodyIndex = -1;
+                        }
+                    }
+
+                    // Get new activeBodyIndex if it's not currently tracked
+                    if (activeBodyIndex == -1)
+                    {
+                        for (int i = 0; i < _bodies.Length; i++)
+                        {
+                            Body body_index = _bodies[i];
+                            if (body_index.IsTracked)
                             {
-                                //Vector3D ElbowLeft = new Vector3D(body.Joints[JointType.ElbowLeft].Position.X, body.Joints[JointType.ElbowLeft].Position.Y, body.Joints[JointType.ElbowLeft].Position.Z);
-                                //Vector3D WristLeft = new Vector3D(body.Joints[JointType.WristLeft].Position.X, body.Joints[JointType.WristLeft].Position.Y, body.Joints[JointType.WristLeft].Position.Z);
-                                //Vector3D ShoulderLeft = new Vector3D(body.Joints[JointType.ShoulderLeft].Position.X, body.Joints[JointType.ShoulderLeft].Position.Y, body.Joints[JointType.ShoulderLeft].Position.Z);
+                                activeBodyIndex = i;
+                                // No need to continue loop
+                                break;
+                            }
+                        }
+                    }
 
-                                //Vector3D Head = new Vector3D(body.Joints[JointType.Head].Position.X, body.Joints[JointType.Head].Position.Y, body.Joints[JointType.Head].Position.Z);
-                                //Vector3D Neck = new Vector3D(body.Joints[JointType.Neck].Position.X, body.Joints[JointType.Neck].Position.Y, body.Joints[JointType.Neck].Position.Z);
-                                //Vector3D SpineShoulder = new Vector3D(body.Joints[JointType.SpineShoulder].Position.X, body.Joints[JointType.SpineShoulder].Position.Y, body.Joints[JointType.SpineShoulder].Position.Z);
-
-                                //double LeftElbowAngle = AngleBetweenTwoVectors(ElbowLeft - ShoulderLeft, ElbowLeft - WristLeft);
-                                //double NeckAngle = AngleBetweenTwoVectors(Neck - Head, Neck - SpineShoulder);
-
-                                //angleLeftElbow = System.Convert.ToString(LeftElbowAngle);
-
-                                // Draw skeleton.
-                                if (_displayBody)
+                    // If active body is still active after checking and 
+                    // updating, use it
+                    if (activeBodyIndex != -1)
+                    {
+                        Body body_index = _bodies[activeBodyIndex];
+                        // Do stuff with known active body.
+                        foreach (var body in _bodies)
+                        {
+                            if (body != null)
+                            {
+                                if (body.IsTracked)
                                 {
-                                    //canvas.DrawSkeleton(body);
+                                    // Left vectors side
+                                    Vector3D FootLeft = new Vector3D(body.Joints[JointType.FootLeft].Position.X, body.Joints[JointType.FootLeft].Position.Y, body.Joints[JointType.FootLeft].Position.Z);
+                                    Vector3D AnkleLeft = new Vector3D(body.Joints[JointType.AnkleLeft].Position.X, body.Joints[JointType.AnkleLeft].Position.Y, body.Joints[JointType.AnkleLeft].Position.Z);
+                                    Vector3D KneeLeft = new Vector3D(body.Joints[JointType.KneeLeft].Position.X, body.Joints[JointType.KneeLeft].Position.Y, body.Joints[JointType.KneeLeft].Position.Z);
+                                    Vector3D HipLeft = new Vector3D(body.Joints[JointType.HipLeft].Position.X, body.Joints[JointType.HipLeft].Position.Y, body.Joints[JointType.HipLeft].Position.Z);
+                                    // Base
+                                    Vector3D SpineBase = new Vector3D(body.Joints[JointType.SpineBase].Position.X, body.Joints[JointType.SpineBase].Position.Y, body.Joints[JointType.SpineBase].Position.Z);
+                                    // Right side
+                                    Vector3D FootRight = new Vector3D(body.Joints[JointType.FootRight].Position.X, body.Joints[JointType.FootRight].Position.Y, body.Joints[JointType.FootRight].Position.Z);
+                                    Vector3D AnkleRight = new Vector3D(body.Joints[JointType.AnkleRight].Position.X, body.Joints[JointType.AnkleRight].Position.Y, body.Joints[JointType.AnkleRight].Position.Z);
+                                    Vector3D KneeRight = new Vector3D(body.Joints[JointType.KneeRight].Position.X, body.Joints[JointType.KneeRight].Position.Y, body.Joints[JointType.KneeRight].Position.Z);
+                                    Vector3D HipRight = new Vector3D(body.Joints[JointType.HipRight].Position.X, body.Joints[JointType.HipRight].Position.Y, body.Joints[JointType.HipRight].Position.Z);
 
-                                    // COORDINATE MAPPING
-                                    foreach (Joint joint in body.Joints.Values)
+                                    // Left angle side
+                                    double LeftAnkleAngle = AngleBetweenTwoVectors(AnkleLeft - KneeLeft, AnkleLeft - FootLeft);
+                                    double LeftKneeAngle = AngleBetweenTwoVectors(KneeLeft - HipLeft, KneeLeft - AnkleLeft);
+                                    double LeftHipAngle = AngleBetweenTwoVectors(HipLeft - SpineBase, HipLeft - KneeLeft);
+                                    // Right angle side
+                                    double RightAnkleAngle = AngleBetweenTwoVectors(AnkleRight - KneeRight, AnkleRight - FootRight);
+                                    double RightKneeAngle = AngleBetweenTwoVectors(KneeRight - HipRight, KneeRight - AnkleRight);
+                                    double RightHipAngle = AngleBetweenTwoVectors(HipRight - SpineBase, HipRight - KneeRight);
+
+                                    // Send to box
+                                    angleLeftAnkle = System.Convert.ToString(LeftAnkleAngle);
+                                    angleLeftKnee = System.Convert.ToString(LeftKneeAngle);
+                                    angleLeftHip = System.Convert.ToString(LeftKneeAngle);
+                                    angleRightAnkle = System.Convert.ToString(RightAnkleAngle);
+                                    angleRightKnee = System.Convert.ToString(RightKneeAngle);
+                                    angleRightHip = System.Convert.ToString(RightHipAngle);
+
+                                    // Draw skeleton.
+                                    if (_displayBody)
                                     {
-                                        if (joint.TrackingState == TrackingState.Tracked)
+                                        //canvas.DrawSkeleton(body);
+
+                                        // COORDINATE MAPPING
+                                        foreach (Joint joint in body.Joints.Values)
                                         {
-                                            // 3D space point
-                                            // pack the X Y Z values
-                                            CameraSpacePoint jointPosition = joint.Position;
-
-                                            // 2D space point 
-                                            Point point = new Point();
-
-                                            if (_mode == Mode.Color)
+                                            if (joint.TrackingState == TrackingState.Tracked)
                                             {
+                                                // 3D space point
+                                                // pack the X Y Z values
+                                                CameraSpacePoint jointPosition = joint.Position;
+
+                                                // 2D space point 
+                                                Point point = new Point();
+
+                                                // We are always using the color frames
                                                 ColorSpacePoint colorPoint = _sensor.CoordinateMapper.MapCameraPointToColorSpace(jointPosition);
 
                                                 point.X = float.IsInfinity(colorPoint.X) ? 0 : colorPoint.X;
                                                 point.Y = float.IsInfinity(colorPoint.Y) ? 0 : colorPoint.Y;
-                                            } // Necessary to reviw this to adjust the mapping in the depth or rgb mode
-                                            else if (_mode == Mode.Depth || _mode == Mode.Infrared) // Change the Image and Canvas dimensions to 512x424
-                                            {
-                                                DepthSpacePoint depthPoint = _sensor.CoordinateMapper.MapCameraPointToDepthSpace(jointPosition);
 
-                                                point.X = float.IsInfinity(depthPoint.X) ? 0 : depthPoint.X;
-                                                point.Y = float.IsInfinity(depthPoint.Y) ? 0 : depthPoint.Y;
+                                                // Draw
+                                                Ellipse ellipse = new Ellipse
+                                                {
+                                                    Fill = Brushes.Red,
+                                                    Width = 30,
+                                                    Height = 30
+                                                };
+
+                                                Canvas.SetLeft(ellipse, point.X - ellipse.Width / 2);
+                                                Canvas.SetTop(ellipse, point.Y - ellipse.Height / 2);
+
+                                                canvas.Children.Add(ellipse);
                                             }
-
-                                            // Draw
-                                            Ellipse ellipse = new Ellipse
-                                            {
-                                                Fill = Brushes.Red,
-                                                Width = 30,
-                                                Height = 30
-                                            };
-
-                                            Canvas.SetLeft(ellipse, point.X - ellipse.Width / 2);
-                                            Canvas.SetTop(ellipse, point.Y - ellipse.Height / 2);
-
-                                            canvas.Children.Add(ellipse);
                                         }
-                                    }
 
-                                    // Send to text blocks
-                                    //VectorALE.Text = angleLeftElbow; ;
+                                        // Send to text blocks
+                                        VectorALA.Text = angleLeftAnkle;
+                                        VectorALK.Text = angleLeftKnee;
+                                        VectorALH.Text = angleLeftHip;
+                                        VectorARA.Text = angleRightAnkle;
+                                        VectorARK.Text = angleRightKnee;
+                                        VectorARH.Text = angleRightHip;
+                                    }
                                 }
                             }
                         }
@@ -181,7 +230,7 @@ namespace Tracking_Angles
             }
         }
 
-        // Calculate angles
+        // Angle calculation method
         public double AngleBetweenTwoVectors(Vector3D vectorA, Vector3D vectorB)
         {
             double dotProduct = 0.0;
