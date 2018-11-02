@@ -31,11 +31,11 @@ namespace Tracking_Angles
         // Create and object to read the incoming frames
         MultiSourceFrameReader _reader;
         // Create a list to save the ID of the tracked bodys
-        private Body[] _bodies;
+        // IList<Body> _bodies;
+        Body[] _bodies;
 
         bool _displayBody = false;
-
-        private int activeBodyIndex = -1; // Default to impossible value.
+        private int activeBodyIndex;
 
         #endregion
 
@@ -67,6 +67,11 @@ namespace Tracking_Angles
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            if (_reader != null)
+            {
+                _reader.Dispose();
+            }
+
             if (_sensor != null)
             {
                 _sensor.Close();
@@ -98,7 +103,6 @@ namespace Tracking_Angles
                 }
             }
 
-            // Body joints
             using (var frame = reference.BodyFrameReference.AcquireFrame())
             {
 

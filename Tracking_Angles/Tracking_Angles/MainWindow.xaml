@@ -4,8 +4,8 @@
         xmlns:local="clr-namespace:Tracking_Angles"
         Title="Kinect | Tracking" Height="1080" Width="1920" Loaded="Window_Loaded" Closed="Window_Closed">
     <Grid>
-        <Image Name="camera" />
-        <Canvas Name="canvas" />
+        <Image Name="camera" Width="1920" Height="1080" />
+        <Canvas Name="canvas" Width="1920" Height="1080" />
         <Grid Style="{StaticResource GridButtonsStyle}">
             <StackPanel Style="{StaticResource StackPanelButtonsStyle}">
                 <Button Content="Tracking" Style="{StaticResource ButtonStyle}" Click="Tracking_Click" />
