@@ -9,7 +9,7 @@
         <Grid Style="{StaticResource GridButtonsStyle}">
             <StackPanel Style="{StaticResource StackPanelButtonsStyle}">
                 <Button Content="Tracking" Style="{StaticResource ButtonStyle}" Click="Tracking_Click" />
-                <TextBlock x:Name="VectorAngle" Style="{StaticResource TextBlockStyle}" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center"/>
+                <TextBlock x:Name="VectorALE" Style="{StaticResource TextBlockStyle}" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Center"/>
             </StackPanel>
         </Grid>
     </Grid>

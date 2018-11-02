@@ -79,6 +79,9 @@ namespace Tracking_Angles
         {
             var reference = e.FrameReference.AcquireFrame();
 
+            // Text block variables
+            string angleLeftElbow = "Null";
+
             // Color
             using (var frame = reference.ColorFrameReference.AcquireFrame())
             {
@@ -108,16 +111,18 @@ namespace Tracking_Angles
                         {
                             if (body.IsTracked)
                             {
-                                Vector3D ElbowLeft = new Vector3D(body.Joints[JointType.ElbowLeft].Position.X, body.Joints[JointType.ElbowLeft].Position.Y, body.Joints[JointType.ElbowLeft].Position.Z);
-                                Vector3D WristLeft = new Vector3D(body.Joints[JointType.WristLeft].Position.X, body.Joints[JointType.WristLeft].Position.Y, body.Joints[JointType.WristLeft].Position.Z);
-                                Vector3D ShoulderLeft = new Vector3D(body.Joints[JointType.ShoulderLeft].Position.X, body.Joints[JointType.ShoulderLeft].Position.Y, body.Joints[JointType.ShoulderLeft].Position.Z);
+                                //Vector3D ElbowLeft = new Vector3D(body.Joints[JointType.ElbowLeft].Position.X, body.Joints[JointType.ElbowLeft].Position.Y, body.Joints[JointType.ElbowLeft].Position.Z);
+                                //Vector3D WristLeft = new Vector3D(body.Joints[JointType.WristLeft].Position.X, body.Joints[JointType.WristLeft].Position.Y, body.Joints[JointType.WristLeft].Position.Z);
+                                //Vector3D ShoulderLeft = new Vector3D(body.Joints[JointType.ShoulderLeft].Position.X, body.Joints[JointType.ShoulderLeft].Position.Y, body.Joints[JointType.ShoulderLeft].Position.Z);
 
-                                Vector3D Head = new Vector3D(body.Joints[JointType.Head].Position.X, body.Joints[JointType.Head].Position.Y, body.Joints[JointType.Head].Position.Z);
-                                Vector3D Neck = new Vector3D(body.Joints[JointType.Neck].Position.X, body.Joints[JointType.Neck].Position.Y, body.Joints[JointType.Neck].Position.Z);
-                                Vector3D SpineShoulder = new Vector3D(body.Joints[JointType.SpineShoulder].Position.X, body.Joints[JointType.SpineShoulder].Position.Y, body.Joints[JointType.SpineShoulder].Position.Z);
+                                //Vector3D Head = new Vector3D(body.Joints[JointType.Head].Position.X, body.Joints[JointType.Head].Position.Y, body.Joints[JointType.Head].Position.Z);
+                                //Vector3D Neck = new Vector3D(body.Joints[JointType.Neck].Position.X, body.Joints[JointType.Neck].Position.Y, body.Joints[JointType.Neck].Position.Z);
+                                //Vector3D SpineShoulder = new Vector3D(body.Joints[JointType.SpineShoulder].Position.X, body.Joints[JointType.SpineShoulder].Position.Y, body.Joints[JointType.SpineShoulder].Position.Z);
 
-                                double LeftElbowAngle = AngleBetweenTwoVectors(ElbowLeft - ShoulderLeft, ElbowLeft - WristLeft);
-                                double NeckAngle = AngleBetweenTwoVectors(Neck - Head, Neck - SpineShoulder);
+                                //double LeftElbowAngle = AngleBetweenTwoVectors(ElbowLeft - ShoulderLeft, ElbowLeft - WristLeft);
+                                //double NeckAngle = AngleBetweenTwoVectors(Neck - Head, Neck - SpineShoulder);
+
+                                //angleLeftElbow = System.Convert.ToString(LeftElbowAngle);
 
                                 // Draw skeleton.
                                 if (_displayBody)
@@ -165,6 +170,9 @@ namespace Tracking_Angles
                                             canvas.Children.Add(ellipse);
                                         }
                                     }
+
+                                    // Send to text blocks
+                                    //VectorALE.Text = angleLeftElbow; ;
                                 }
                             }
                         }
