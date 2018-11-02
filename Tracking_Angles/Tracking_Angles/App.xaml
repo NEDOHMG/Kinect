@@ -8,7 +8,7 @@
             <Setter Property="VerticalAlignment" Value="Bottom" />
             <Setter Property="Background">
                 <Setter.Value>
-                    <SolidColorBrush Color="Black" Opacity="0.4" />
+                    <SolidColorBrush Color="White" Opacity="1" />
                 </Setter.Value>
             </Setter>
         </Style>

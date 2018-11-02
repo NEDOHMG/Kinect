@@ -7,6 +7,7 @@ using System;
 using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows.Media.Media3D;
+using System.Threading;
 
 namespace Tracking_Angles
 {
@@ -221,6 +222,8 @@ namespace Tracking_Angles
                                         VectorARA.Text = angleRightAnkle;
                                         VectorARK.Text = angleRightKnee;
                                         VectorARH.Text = angleRightHip;
+                                        int milliseconds = 20;
+                                        Thread.Sleep(milliseconds);
                                     }
                                 }
                             }
