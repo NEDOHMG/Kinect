@@ -1,0 +1,17 @@
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\bin\Debug\Tracking_Angles.exe.config
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\obj\Debug\Tracking_Angles.csprojResolveAssemblyReference.cache
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\obj\Debug\MainWindow.g.cs
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\obj\Debug\App.g.cs
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\obj\Debug\Tracking_Angles_MarkupCompile.cache
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\obj\Debug\Tracking_Angles_MarkupCompile.lref
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\bin\Debug\Tracking_Angles.exe
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\bin\Debug\Tracking_Angles.pdb
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\bin\Debug\Microsoft.Kinect.dll
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\bin\Debug\Microsoft.Kinect.xml
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\obj\Debug\MainWindow.baml
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\obj\Debug\Tracking_Angles.g.resources
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\obj\Debug\Tracking_Angles.Properties.Resources.resources
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\obj\Debug\Tracking_Angles.csproj.GenerateResource.Cache
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\obj\Debug\Tracking_Angles.exe
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\obj\Debug\Tracking_Angles.pdb
+C:\Users\avega\Documents\Github\Kinect_Windows\V2\Tracking_Angles\Tracking_Angles\obj\Debug\App.baml
