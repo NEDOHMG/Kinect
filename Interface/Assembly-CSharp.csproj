@@ -63,6 +63,8 @@
      <Compile Include="Assets\KinectView\Scripts\InfraredSourceManager.cs" />
      <Compile Include="Assets\KinectView\Scripts\InfraredSourceView.cs" />
      <Compile Include="Assets\KinectView\Scripts\MultiSourceManager.cs" />
+     <Compile Include="Assets\Scripts\Game\Bubble.cs" />
+     <Compile Include="Assets\Scripts\Game\Hand.cs" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>C:/Users/avega/Documents/Github/Kinect/Interface/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>

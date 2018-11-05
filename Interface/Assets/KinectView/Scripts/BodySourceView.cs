@@ -14,7 +14,7 @@ public class BodySourceView : MonoBehaviour
     {
         Kinect.JointType.HandLeft,
         Kinect.JointType.HandRight,
-        Kinect.JointType.Head,
+        //Kinect.JointType.Head,
     };
 
     void Update()
