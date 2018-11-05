@@ -13,7 +13,7 @@ public class BodySourceView : MonoBehaviour
     private List<Kinect.JointType> _joints = new List<Kinect.JointType>
     {
         Kinect.JointType.HandLeft,
-        Kinect.JointType.HandRight,
+        //Kinect.JointType.HandRight,
         //Kinect.JointType.Head,
     };
 
