@@ -17,6 +17,7 @@ public class Hand : MonoBehaviour {
         if (!collision.gameObject.CompareTag("Bubble"))
             return;
 
-        collision.gameObject.SetActive(false);
+        Bubble bubble = collision.gameObject.GetComponent<Bubble>();
+        StartCoroutine(bubble.Pop());
     }
 }
