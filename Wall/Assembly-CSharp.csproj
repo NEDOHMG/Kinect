@@ -64,6 +64,7 @@
      <Compile Include="Assets\Scripts\Kinect\InfraredSourceManager.cs" />
      <Compile Include="Assets\Scripts\Kinect\InfraredSourceView.cs" />
      <Compile Include="Assets\Scripts\Kinect\MultiSourceManager.cs" />
+     <Compile Include="Assets\Scripts\MeasureDepth.cs" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>C:/Users/avega/Documents/Github/Kinect/Wall/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>
