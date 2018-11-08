@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using Kinect = Windows.Kinect;
 using System;
+using UnityEngine.UI;
 
 public class BodySourceView : MonoBehaviour 
 {
     public Material BoneMaterial;
     public GameObject BodySourceManager;
+    public Text ElbowAngleText;
 
     private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
     private BodySourceManager _BodyManager;
@@ -90,7 +92,8 @@ public class BodySourceView : MonoBehaviour
                 // Initialize the class
                 _anglesCalculation = gameObject.GetComponent<AnglesCalculation>();
                 double ElbowLeftAngle = _anglesCalculation.AngleBetweenTwoVectors(ElbowLeft - ShoulderLeft, ElbowLeft - HandLeft);
-                Debug.Log(System.Convert.ToString(ElbowLeftAngle));
+                //Debug.Log(System.Convert.ToString(ElbowLeftAngle));
+                ElbowAngleText.text = ElbowLeftAngle.ToString();
 
             }
         }
