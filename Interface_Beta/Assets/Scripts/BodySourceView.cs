@@ -11,6 +11,7 @@ public class BodySourceView : MonoBehaviour
 
     private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
     private BodySourceManager _BodyManager;
+    private AnglesCalculation _anglesCalculation;
 
     #region Joints
 
@@ -86,7 +87,9 @@ public class BodySourceView : MonoBehaviour
                 Vector3 ShoulderLeft = new Vector3(body.Joints[Kinect.JointType.ShoulderLeft].Position.X, body.Joints[Kinect.JointType.ShoulderLeft].Position.Y, body.Joints[Kinect.JointType.ShoulderLeft].Position.Z);
 
                 // Calculation of the angles 
-                double ElbowLeftAngle = AngleBetweenTwoVectors(ElbowLeft - ShoulderLeft, ElbowLeft - HandLeft);
+                // Initialize the class
+                _anglesCalculation = gameObject.GetComponent<AnglesCalculation>();
+                double ElbowLeftAngle = _anglesCalculation.AngleBetweenTwoVectors(ElbowLeft - ShoulderLeft, ElbowLeft - HandLeft);
                 Debug.Log(System.Convert.ToString(ElbowLeftAngle));
 
             }
@@ -190,15 +193,15 @@ public class BodySourceView : MonoBehaviour
         }
     }
 
-    private double AngleBetweenTwoVectors(Vector3 vectorA, Vector3 vectorB)
-    {
-        double dotProduct = 0.0;
-        vectorA.Normalize();
-        vectorB.Normalize();
-        dotProduct = Vector3.Dot(vectorA, vectorB);
+    //private double AngleBetweenTwoVectors(Vector3 vectorA, Vector3 vectorB)
+    //{
+    //    double dotProduct = 0.0;
+    //    vectorA.Normalize();
+    //    vectorB.Normalize();
+    //    dotProduct = Vector3.Dot(vectorA, vectorB);
 
-        return (double)Math.Acos(dotProduct) / Math.PI * 180;
-    }
+    //    return (double)Math.Acos(dotProduct) / Math.PI * 180;
+    //}
 
     private static Vector3 GetVector3FromJoint(Kinect.Joint joint)
     {
