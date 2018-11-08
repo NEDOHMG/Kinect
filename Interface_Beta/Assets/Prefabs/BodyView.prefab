@@ -163,3 +163,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BoneMaterial: {fileID: 2100000, guid: f2ea145c63353784985576f08398a815, type: 2}
   BodySourceManager: {fileID: 0}
+  LeftAnkleText: {fileID: 0}
+  LeftKneeText: {fileID: 0}
+  LeftHipText: {fileID: 0}
+  RightAnkleText: {fileID: 0}
+  RightKneeText: {fileID: 0}
+  RightHipText: {fileID: 0}

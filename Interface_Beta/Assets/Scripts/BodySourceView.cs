@@ -9,7 +9,12 @@ public class BodySourceView : MonoBehaviour
 {
     public Material BoneMaterial;
     public GameObject BodySourceManager;
-    public Text ElbowAngleText;
+    public Text LeftAnkleText;
+    public Text LeftKneeText;
+    public Text LeftHipText;
+    public Text RightAnkleText;
+    public Text RightKneeText;
+    public Text RightHipText;
 
     private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
     private BodySourceManager _BodyManager;
@@ -82,19 +87,39 @@ public class BodySourceView : MonoBehaviour
             {
                 trackedIds.Add (body.TrackingId);
 
-                // Modified 
-                // Check the tracking of the left elbow 
-                Vector3 HandLeft = new Vector3(body.Joints[Kinect.JointType.HandLeft].Position.X, body.Joints[Kinect.JointType.HandLeft].Position.Y, body.Joints[Kinect.JointType.HandLeft].Position.Z);
-                Vector3 ElbowLeft = new Vector3(body.Joints[Kinect.JointType.ElbowLeft].Position.X, body.Joints[Kinect.JointType.ElbowLeft].Position.Y, body.Joints[Kinect.JointType.ElbowLeft].Position.Z);
-                Vector3 ShoulderLeft = new Vector3(body.Joints[Kinect.JointType.ShoulderLeft].Position.X, body.Joints[Kinect.JointType.ShoulderLeft].Position.Y, body.Joints[Kinect.JointType.ShoulderLeft].Position.Z);
+                // Get the location of the joints in 3D space
+
+                // Left 
+                Vector3 _footLeft = new Vector3(body.Joints[Kinect.JointType.FootLeft].Position.X, body.Joints[Kinect.JointType.FootLeft].Position.Y, body.Joints[Kinect.JointType.FootLeft].Position.Z);
+                Vector3 _ankleLeft = new Vector3(body.Joints[Kinect.JointType.AnkleLeft].Position.X, body.Joints[Kinect.JointType.AnkleLeft].Position.Y, body.Joints[Kinect.JointType.AnkleLeft].Position.Z);
+                Vector3 _kneeLeft = new Vector3(body.Joints[Kinect.JointType.KneeLeft].Position.X, body.Joints[Kinect.JointType.KneeLeft].Position.Y, body.Joints[Kinect.JointType.KneeLeft].Position.Z);
+                Vector3 _hipLeft = new Vector3(body.Joints[Kinect.JointType.HipLeft].Position.X, body.Joints[Kinect.JointType.HipLeft].Position.Y, body.Joints[Kinect.JointType.HipLeft].Position.Z);
+
+                // Center 
+                Vector3 _spine = new Vector3(body.Joints[Kinect.JointType.SpineBase].Position.X, body.Joints[Kinect.JointType.SpineBase].Position.Y, body.Joints[Kinect.JointType.SpineBase].Position.Z);
+
+                // Right 
+                Vector3 _footRight = new Vector3(body.Joints[Kinect.JointType.FootRight].Position.X, body.Joints[Kinect.JointType.FootRight].Position.Y, body.Joints[Kinect.JointType.FootRight].Position.Z);
+                Vector3 _ankleRight = new Vector3(body.Joints[Kinect.JointType.AnkleRight].Position.X, body.Joints[Kinect.JointType.AnkleRight].Position.Y, body.Joints[Kinect.JointType.AnkleRight].Position.Z);
+                Vector3 _kneeRight = new Vector3(body.Joints[Kinect.JointType.KneeRight].Position.X, body.Joints[Kinect.JointType.KneeRight].Position.Y, body.Joints[Kinect.JointType.KneeRight].Position.Z);
+                Vector3 _hipRightt = new Vector3(body.Joints[Kinect.JointType.HipRight].Position.X, body.Joints[Kinect.JointType.HipRight].Position.Y, body.Joints[Kinect.JointType.HipRight].Position.Z);
+
+                _anglesCalculation = gameObject.GetComponent<AnglesCalculation>(); // Initialize the AnglesCalculation class
 
                 // Calculation of the angles 
-                // Initialize the class
-                _anglesCalculation = gameObject.GetComponent<AnglesCalculation>();
-                double ElbowLeftAngle = _anglesCalculation.AngleBetweenTwoVectors(ElbowLeft - ShoulderLeft, ElbowLeft - HandLeft);
-                //Debug.Log(System.Convert.ToString(ElbowLeftAngle));
-                ElbowAngleText.text = ElbowLeftAngle.ToString();
+                double _ankleLeftAngle = _anglesCalculation.AngleBetweenTwoVectors(_ankleLeft - _kneeLeft, _ankleLeft - _footLeft);
+                double _kneeLeftAngle = _anglesCalculation.AngleBetweenTwoVectors(_kneeLeft - _hipLeft, _kneeLeft - _ankleLeft);
+                double _hipLeftAngle = _anglesCalculation.AngleBetweenTwoVectors(_hipLeft - _spine, _hipLeft - _kneeLeft);
+                double _ankleRightAngle = _anglesCalculation.AngleBetweenTwoVectors(_ankleRight - _kneeRight, _ankleRight - _footRight);
+                double _kneeRightAngle = _anglesCalculation.AngleBetweenTwoVectors(_kneeRight - _hipRightt, _kneeRight - _ankleRight);
+                double _hipRightAngle = _anglesCalculation.AngleBetweenTwoVectors(_hipRightt - _spine, _hipRightt - _kneeRight);
 
+                LeftAnkleText.text = "The left ankle angle is: " + _ankleLeftAngle.ToString();
+                LeftKneeText.text = "The left knee angle is: " + _kneeLeftAngle.ToString();
+                LeftHipText.text = "The left hip angle is: " + _hipLeftAngle.ToString();
+                RightAnkleText.text = "The right ankle angle is: " + _ankleRightAngle.ToString();
+                RightKneeText.text = "The right knee is: " + _kneeRightAngle.ToString();
+                RightHipText.text = "The right hip angle is: " + _hipRightAngle.ToString();
             }
         }
         
