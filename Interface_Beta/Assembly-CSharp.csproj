@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\AnglesCalculation.cs" />
      <Compile Include="Assets\Scripts\BodySourceManager.cs" />
      <Compile Include="Assets\Scripts\BodySourceView.cs" />
+     <Compile Include="Assets\Scripts\DisableOnStart.cs" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>C:/Users/avega/Documents/Github/Kinect/Interface_Beta/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Kinect = Windows.Kinect;
+using System;
 
 public class BodySourceView : MonoBehaviour 
 {
@@ -10,7 +11,8 @@ public class BodySourceView : MonoBehaviour
 
     private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
     private BodySourceManager _BodyManager;
-    private AnglesCalculation angleCalculation;
+
+    #region Joints
 
     private Dictionary<Kinect.JointType, Kinect.JointType> _BoneMap = new Dictionary<Kinect.JointType, Kinect.JointType>()
     {
@@ -43,7 +45,9 @@ public class BodySourceView : MonoBehaviour
         { Kinect.JointType.SpineShoulder, Kinect.JointType.Neck },
         { Kinect.JointType.Neck, Kinect.JointType.Head },
     };
-    
+
+    #endregion
+
     void Update () 
     {
         if (BodySourceManager == null)
@@ -75,9 +79,16 @@ public class BodySourceView : MonoBehaviour
             {
                 trackedIds.Add (body.TrackingId);
 
-                // Midified 
-                // Left vectors side
-                Vector3 FootLeft = new Vector3(body.Joints[Kinect.JointType.FootLeft].Position.X, body.Joints[Kinect.JointType.FootLeft].Position.Y, body.Joints[Kinect.JointType.FootLeft].Position.Z);
+                // Modified 
+                // Check the tracking of the left elbow 
+                Vector3 HandLeft = new Vector3(body.Joints[Kinect.JointType.HandLeft].Position.X, body.Joints[Kinect.JointType.HandLeft].Position.Y, body.Joints[Kinect.JointType.HandLeft].Position.Z);
+                Vector3 ElbowLeft = new Vector3(body.Joints[Kinect.JointType.ElbowLeft].Position.X, body.Joints[Kinect.JointType.ElbowLeft].Position.Y, body.Joints[Kinect.JointType.ElbowLeft].Position.Z);
+                Vector3 ShoulderLeft = new Vector3(body.Joints[Kinect.JointType.ShoulderLeft].Position.X, body.Joints[Kinect.JointType.ShoulderLeft].Position.Y, body.Joints[Kinect.JointType.ShoulderLeft].Position.Z);
+
+                // Calculation of the angles 
+                double ElbowLeftAngle = AngleBetweenTwoVectors(ElbowLeft - ShoulderLeft, ElbowLeft - HandLeft);
+                Debug.Log(System.Convert.ToString(ElbowLeftAngle));
+
             }
         }
         
@@ -111,7 +122,9 @@ public class BodySourceView : MonoBehaviour
             }
         }
     }
-    
+
+    #region Events
+
     private GameObject CreateBodyObject(ulong id)
     {
         GameObject body = new GameObject("Body:" + id);
@@ -176,9 +189,21 @@ public class BodySourceView : MonoBehaviour
             return Color.black;
         }
     }
-    
+
+    private double AngleBetweenTwoVectors(Vector3 vectorA, Vector3 vectorB)
+    {
+        double dotProduct = 0.0;
+        vectorA.Normalize();
+        vectorB.Normalize();
+        dotProduct = Vector3.Dot(vectorA, vectorB);
+
+        return (double)Math.Acos(dotProduct) / Math.PI * 180;
+    }
+
     private static Vector3 GetVector3FromJoint(Kinect.Joint joint)
     {
         return new Vector3(joint.Position.X * 10, joint.Position.Y * 10, joint.Position.Z * 10);
     }
+
+    #endregion
 }
