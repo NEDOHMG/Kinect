@@ -19,11 +19,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4779815225636214}
-  - component: {fileID: 114741541377195970}
   - component: {fileID: 114670133880559212}
+  - component: {fileID: 114396560836131152}
+  - component: {fileID: 114393048671430652}
   m_Layer: 0
   m_Name: BodyView
-  m_TagString: Untagged
+  m_TagString: Kinect
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -139,6 +140,115 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96efc2fbfd605d54f81c36bc09fb18b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114393048671430652
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1646413871060916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8821130411451d343a1488e2a9db134e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BoneMaterial: {fileID: 0}
+  BodySourceManager: {fileID: 0}
+  LeftAnkleText: {fileID: 0}
+  LeftKneeText: {fileID: 0}
+  LeftHipText: {fileID: 0}
+  RightAnkleText: {fileID: 0}
+  RightKneeText: {fileID: 0}
+  RightHipText: {fileID: 0}
+  TrackingWindow: 3
+  Calibrated: 0
+  Stopped: 0
+  ExerciseState: 0
+  colorActuator: 1001
+  LeftKneeFlexionAngle: 0
+  LeftKneeExtensionAngle: 0
+  RightKneeFlexionAngle: 0
+  RightKneeExtensionAngle: 0
+  LeftHipFlexionAngle: 0
+  RightHipFlexionAngle: 0
+  LeftHipExtensionAngle: 0
+  RightHipExtensionAngle: 0
+  FlexionTime: 0
+  ExtensionTime: 0
+  MotionTimer: 0
+  fps: 0
+  threshold: 0
+  emergencythreshold: 0.02
+  emergencycounter: 0
+  calTrackingWindow: 3
+  _calspineList: []
+  _deltacalspineY: []
+  LateralsWindowSize: 0
+  LeftKneeLateralPositions: []
+  LeftKneeLateralDeltas: []
+  LeftKneeAverageDelta: 0
+  RightKneeLateralPositions: []
+  RightKneeLateralDeltas: []
+  RightKneeAverageDelta: 0
+  StopWindowSize: 0
+  SpineBaseVerticalPositions: []
+  SpineBaseVerticalDeltas: []
+  SpineBaseAverageDelta: 0
+  SpineBaseCurrentAverage: 0
+--- !u!114 &114396560836131152
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1646413871060916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8821130411451d343a1488e2a9db134e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BoneMaterial: {fileID: 2100000, guid: a3dcdd110779d6b4696dadfc1b7788eb, type: 2}
+  BodySourceManager: {fileID: 1979760406085720, guid: 9ad4c7dc53a59774ea254f836d958c44,
+    type: 2}
+  LeftAnkleText: {fileID: 0}
+  LeftKneeText: {fileID: 0}
+  LeftHipText: {fileID: 0}
+  RightAnkleText: {fileID: 0}
+  RightKneeText: {fileID: 0}
+  RightHipText: {fileID: 0}
+  TrackingWindow: 3
+  Calibrated: 0
+  Stopped: 0
+  ExerciseState: 0
+  colorActuator: 1001
+  LeftKneeFlexionAngle: 0
+  LeftKneeExtensionAngle: 0
+  RightKneeFlexionAngle: 0
+  RightKneeExtensionAngle: 0
+  LeftHipFlexionAngle: 0
+  RightHipFlexionAngle: 0
+  LeftHipExtensionAngle: 0
+  RightHipExtensionAngle: 0
+  FlexionTime: 0
+  ExtensionTime: 0
+  MotionTimer: 0
+  fps: 0
+  threshold: 0
+  emergencythreshold: 0.3
+  emergencycounter: 0
+  calTrackingWindow: 3
+  _calspineList: []
+  _deltacalspineY: []
+  LateralsWindowSize: 0
+  LeftKneeLateralPositions: []
+  LeftKneeLateralDeltas: []
+  LeftKneeAverageDelta: 0
+  RightKneeLateralPositions: []
+  RightKneeLateralDeltas: []
+  RightKneeAverageDelta: 0
+  StopWindowSize: 0
+  SpineBaseVerticalPositions: []
+  SpineBaseVerticalDeltas: []
+  SpineBaseAverageDelta: 0
+  SpineBaseCurrentAverage: 0
 --- !u!114 &114670133880559212
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -150,22 +260,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff8bce6753edcc4d9ca51f897466142, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114741541377195970
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1646413871060916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8821130411451d343a1488e2a9db134e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BoneMaterial: {fileID: 2100000, guid: f2ea145c63353784985576f08398a815, type: 2}
-  BodySourceManager: {fileID: 0}
-  LeftAnkleText: {fileID: 0}
-  LeftKneeText: {fileID: 0}
-  LeftHipText: {fileID: 0}
-  RightAnkleText: {fileID: 0}
-  RightKneeText: {fileID: 0}
-  RightHipText: {fileID: 0}

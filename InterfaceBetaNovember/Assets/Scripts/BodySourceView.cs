@@ -53,7 +53,7 @@ public class BodySourceView : MonoBehaviour
     //Threshold for determining stopped motion. Needs to be calibrated.
     public double threshold = 0.0;
 
-    public double emergencythreshold = 0.00005;
+    public double emergencythreshold = 0.3;
     public int emergencycounter = 0;
 
     // Variables used to save the Y values of the SpineBase
@@ -146,24 +146,24 @@ public class BodySourceView : MonoBehaviour
     public double SpineBaseCurrentAverage = 0.0;
 
     // Note that this function is only meant to be called from OnGUI() functions.
-    public static void GUIDrawRect( Rect position, Color color )
+    public static void GUIDrawRect(Rect position, Color color)
     {
-        if( _staticRectTexture == null )
+        if (_staticRectTexture == null)
         {
-            _staticRectTexture = new Texture2D( 1, 1 );
+            _staticRectTexture = new Texture2D(1, 1);
         }
 
-        if( _staticRectStyle == null )
+        if (_staticRectStyle == null)
         {
             _staticRectStyle = new GUIStyle();
         }
 
-        _staticRectTexture.SetPixel( 0, 0, color );
+        _staticRectTexture.SetPixel(0, 0, color);
         _staticRectTexture.Apply();
 
         _staticRectStyle.normal.background = _staticRectTexture;
 
-        GUI.Box( position, GUIContent.none, _staticRectStyle );
+        GUI.Box(position, GUIContent.none, _staticRectStyle);
     }
 
     void OnGUI()
@@ -193,12 +193,12 @@ public class BodySourceView : MonoBehaviour
 
     }
 
-    void Update ()
+    void Update()
     {
         //FPS calculation
         deltaTime += (double)Time.deltaTime;
         deltaTime /= 2.0;
-        fps = 1.0/deltaTime;
+        fps = 1.0 / deltaTime;
 
         if (BodySourceManager == null)
         {
@@ -218,16 +218,16 @@ public class BodySourceView : MonoBehaviour
         }
 
         List<ulong> trackedIds = new List<ulong>();
-        foreach(var body in data)
+        foreach (var body in data)
         {
             if (body == null)
             {
                 continue;
-              }
+            }
 
-            if(body.IsTracked)
+            if (body.IsTracked)
             {
-                trackedIds.Add (body.TrackingId);
+                trackedIds.Add(body.TrackingId);
 
                 // Get the location of the joints in 3D space
 
@@ -252,14 +252,15 @@ public class BodySourceView : MonoBehaviour
                 _spinBase = new Vector3(body.Joints[Kinect.JointType.SpineBase].Position.X, body.Joints[Kinect.JointType.SpineBase].Position.Y, body.Joints[Kinect.JointType.SpineBase].Position.Z);
 
                 // Calculation of the spin Y delta
-                if(_spinTracking == true){
+                if (_spinTracking == true)
+                {
 
-                  SpinDeltaYTracking(_spinBase);
+                    SpinDeltaYTracking(_spinBase);
 
                 }
 
                 // Emergency stop
-                //EmergencyStop(body);
+                EmergencyStop(body);
 
                 // Calculation of the angles
                 float _ankleLeftAngle = _anglesCalculation.AngleBetweenTwoVectors(_ankleLeft - _kneeLeft, _ankleLeft - _footLeft);
@@ -295,25 +296,25 @@ public class BodySourceView : MonoBehaviour
         List<ulong> knownIds = new List<ulong>(_Bodies.Keys);
 
         // First delete untracked bodies
-        foreach(ulong trackingId in knownIds)
+        foreach (ulong trackingId in knownIds)
         {
-            if(!trackedIds.Contains(trackingId))
+            if (!trackedIds.Contains(trackingId))
             {
                 Destroy(_Bodies[trackingId]);
                 _Bodies.Remove(trackingId);
             }
         }
 
-        foreach(var body in data)
+        foreach (var body in data)
         {
             if (body == null)
             {
                 continue;
             }
 
-            if(body.IsTracked)
+            if (body.IsTracked)
             {
-                if(!_Bodies.ContainsKey(body.TrackingId))
+                if (!_Bodies.ContainsKey(body.TrackingId))
                 {
                     _Bodies[body.TrackingId] = CreateBodyObject(body.TrackingId);
                 }
@@ -328,11 +329,11 @@ public class BodySourceView : MonoBehaviour
     //Experimental Function to Calibrate the threshold variable
     private void CalibrateThreshold(double CurrentSpineBaseVertical)
     {
-        if(Calibrated)
+        if (Calibrated)
             return;
 
         //get the size of the tracking window
-        if(StopWindowSize == 0)
+        if (StopWindowSize == 0)
         {
             StopWindowSize = (int)(fps * TrackingWindow);
             return;
@@ -343,18 +344,18 @@ public class BodySourceView : MonoBehaviour
         SpineBaseVerticalPositions.Add(CurrentSpineBaseVertical);
 
         //still need more values
-        if(SpineBaseVerticalPositions.Count < trackingsize)
+        if (SpineBaseVerticalPositions.Count < trackingsize)
             return;
 
         //calculate our first delta list
-        for(int i = 0; i < trackingsize - 1; i++)
+        for (int i = 0; i < trackingsize - 1; i++)
         {
             SpineBaseVerticalDeltas.Add(SpineBaseVerticalPositions[i + 1] - SpineBaseVerticalPositions[i]);
         }
 
         //get the absolute value delta maximum
         double AverageDelta = 0.0;
-        for(int i = 0; i < SpineBaseVerticalDeltas.Count; i++)
+        for (int i = 0; i < SpineBaseVerticalDeltas.Count; i++)
         {
             AverageDelta += Math.Abs(SpineBaseVerticalDeltas[i]);
         }
@@ -382,7 +383,7 @@ public class BodySourceView : MonoBehaviour
         else if (Calibrated == false)
         {
             //calculate the number of samples for the tracking time (3 seconds in this case)
-            if(StopWindowSize == 0)
+            if (StopWindowSize == 0)
             {
                 StopWindowSize = (int)(fps * calTrackingWindow);
                 return;
@@ -393,7 +394,7 @@ public class BodySourceView : MonoBehaviour
             _calspineList.Add(currentSpinePoint);
 
             //if we dont have 3 seconds of values yet, stop here
-            if(_calspineList.Count < trackingtime)
+            if (_calspineList.Count < trackingtime)
                 return;
 
 
@@ -448,7 +449,7 @@ public class BodySourceView : MonoBehaviour
         MotionTimer += (double)Time.deltaTime;
 
         //if subject starts moving down, change state to 1
-        if(Calibrated && !Stopped && ExerciseState == 0)
+        if (Calibrated && !Stopped && ExerciseState == 0)
         {
             ExerciseState = 1;
 
@@ -467,7 +468,7 @@ public class BodySourceView : MonoBehaviour
             colorActuator = 1010;
         }
         //if subject stops moving down, change state to 2
-        else if(Stopped && ExerciseState == 1)
+        else if (Stopped && ExerciseState == 1)
         {
             ExerciseState = 2;
 
@@ -481,7 +482,7 @@ public class BodySourceView : MonoBehaviour
             colorActuator = 100;
         }
         //if subject starts moving up, change state to 3
-        else if(!Stopped && ExerciseState == 2)
+        else if (!Stopped && ExerciseState == 2)
         {
             ExerciseState = 3;
 
@@ -500,7 +501,7 @@ public class BodySourceView : MonoBehaviour
             colorActuator = 1010;
         }
         //if subject stops moving up, change state to 4
-        else if(Stopped && ExerciseState == 3)
+        else if (Stopped && ExerciseState == 3)
         {
             ExerciseState = 0;
 
@@ -516,7 +517,7 @@ public class BodySourceView : MonoBehaviour
             //upload current values to neural network here
         }
 
-        if(!Calibrated)
+        if (!Calibrated)
         {
             StatusLightColor = Color.red;
             colorActuator = 1001;
@@ -528,11 +529,11 @@ public class BodySourceView : MonoBehaviour
     //Experimental function to potentially detect when a subject has stopped motion
     private void DetectStop(double CurrentSpineBaseVertical)
     {
-        if(!Calibrated)
+        if (!Calibrated)
             return;
 
         //get the size of the tracking window
-        if(StopWindowSize == 0)
+        if (StopWindowSize == 0)
         {
             StopWindowSize = (int)(fps * TrackingWindow);
             return;
@@ -543,9 +544,9 @@ public class BodySourceView : MonoBehaviour
         SpineBaseVerticalPositions.Add(CurrentSpineBaseVertical);
 
         //still need more values
-        if(SpineBaseVerticalPositions.Count < trackingsize)
+        if (SpineBaseVerticalPositions.Count < trackingsize)
             return;
-        else if(SpineBaseVerticalPositions.Count > trackingsize)
+        else if (SpineBaseVerticalPositions.Count > trackingsize)
         {
 
             //update the positions lists
@@ -563,7 +564,7 @@ public class BodySourceView : MonoBehaviour
             //if(Math.Abs(SpineBaseCurrentAverage) > SpineBaseAverageDelta)
 
             double AverageDelta = 0.0;
-            for(int i = 0; i < SpineBaseVerticalDeltas.Count; i++)
+            for (int i = 0; i < SpineBaseVerticalDeltas.Count; i++)
             {
                 AverageDelta += Math.Abs(SpineBaseVerticalDeltas[i]);
             }
@@ -574,11 +575,11 @@ public class BodySourceView : MonoBehaviour
             //    SpineBaseAverageDelta = Math.Abs(SpineBaseCurrentAverage);
 
             //update stopped state
-            if(Math.Abs(SpineBaseCurrentAverage) <= Math.Abs(threshold) && !Stopped)
+            if (Math.Abs(SpineBaseCurrentAverage) <= Math.Abs(threshold) && !Stopped)
             {
                 Stopped = true;
             }
-            else if(Math.Abs(SpineBaseCurrentAverage) > Math.Abs(threshold) && Stopped)
+            else if (Math.Abs(SpineBaseCurrentAverage) > Math.Abs(threshold) && Stopped)
             {
                 Stopped = false;
             }
@@ -587,7 +588,7 @@ public class BodySourceView : MonoBehaviour
         else
         {
             //calculate our first delta list
-            for(int i = 0; i < trackingsize - 1; i++)
+            for (int i = 0; i < trackingsize - 1; i++)
             {
                 SpineBaseVerticalDeltas.Add(SpineBaseVerticalPositions[i + 1] - SpineBaseVerticalPositions[i]);
             }
@@ -599,7 +600,7 @@ public class BodySourceView : MonoBehaviour
     {
 
         //get the size of the tracking window
-        if(LateralsWindowSize == 0)
+        if (LateralsWindowSize == 0)
         {
             LateralsWindowSize = (int)(fps * TrackingWindow);
             return;
@@ -611,9 +612,9 @@ public class BodySourceView : MonoBehaviour
         RightKneeLateralPositions.Add(CurrentRightKneeLateral);
 
         //still need more values
-        if(LeftKneeLateralPositions.Count < trackingsize)
+        if (LeftKneeLateralPositions.Count < trackingsize)
             return;
-        else if(LeftKneeLateralPositions.Count > trackingsize)
+        else if (LeftKneeLateralPositions.Count > trackingsize)
         {
             //update the positions lists
             LeftKneeLateralPositions.RemoveAt(0);
@@ -630,16 +631,16 @@ public class BodySourceView : MonoBehaviour
             double RightKneeCurrentAverage = RightKneeLateralDeltas.Average();
 
             //update the deltas
-            if(Math.Abs(LeftKneeCurrentAverage) > LeftKneeAverageDelta)
+            if (Math.Abs(LeftKneeCurrentAverage) > LeftKneeAverageDelta)
                 LeftKneeAverageDelta = Math.Abs(LeftKneeCurrentAverage);
-            if(Math.Abs(RightKneeCurrentAverage) > RightKneeAverageDelta)
+            if (Math.Abs(RightKneeCurrentAverage) > RightKneeAverageDelta)
                 RightKneeAverageDelta = Math.Abs(RightKneeCurrentAverage);
         }
         else
         {
 
             //calculate our first delta list for knees
-            for(int i = 0; i < trackingsize - 1; i++)
+            for (int i = 0; i < trackingsize - 1; i++)
             {
                 LeftKneeLateralDeltas.Add(LeftKneeLateralPositions[i + 1] - LeftKneeLateralPositions[i]);
                 RightKneeLateralDeltas.Add(RightKneeLateralPositions[i + 1] - RightKneeLateralPositions[i]);
@@ -653,73 +654,78 @@ public class BodySourceView : MonoBehaviour
     private void SpinDeltaYTracking(Vector3 _spinBase)
     {
 
-      // Calculate the max for 3 seconds
-      if (_spinTrackingMax == true && fps < TrackingWindow)
-      {
-
-        // Add the y spin values in the list
-        _spineList.Add(_spinBase.y);
-        // Calculate the deltas
-        for(int i = 0; i < _spineList.Count - 1; i++)
+        // Calculate the max for 3 seconds
+        if (_spinTrackingMax == true && fps < TrackingWindow)
         {
-            _differencesSpinY.Add((_spineList[i+1] - _spineList[i]));
+
+            // Add the y spin values in the list
+            _spineList.Add(_spinBase.y);
+            // Calculate the deltas
+            for (int i = 0; i < _spineList.Count - 1; i++)
+            {
+                _differencesSpinY.Add((_spineList[i + 1] - _spineList[i]));
+            }
+            // This variable has the delta average of the spin user
+            _differencesSpinYMaxAverage = _differencesSpinY.Average();
+            // Activate the flag to track the minimum
+            _spinTrackingMin = true;
+            // refresh the list to use them again
+            _spineList.Clear();
+            _differencesSpinY.Clear();
+            _spinTrackingMax = false;
+
         }
-        // This variable has the delta average of the spin user
-        _differencesSpinYMaxAverage = _differencesSpinY.Average();
-        // Activate the flag to track the minimum
-        _spinTrackingMin = true;
-        // refresh the list to use them again
-        _spineList.Clear();
-        _differencesSpinY.Clear();
-        _spinTrackingMax = false;
 
-      }
-
-      // Start the time to detect if the user is moving here
-      // initialize the timer of squat exercise
-      _ySpinTimerStart += Time.deltaTime;
-
-      // Calculate the min
-      if (_spinTrackingMin == true && Stopped) {
-
-        _ySpinTimerDownStop = _ySpinTimerStart;
-        _ySpinTimerStart = 0;
+        // Start the time to detect if the user is moving here
+        // initialize the timer of squat exercise
         _ySpinTimerStart += Time.deltaTime;
-        // Add the y spin values in the list
-        _spineList.Add(_spinBase.y);
 
-      }
+        // Calculate the min
+        if (_spinTrackingMin == true && Stopped)
+        {
 
-      // Calculate the delta of the min value
-      for(int i = 0; i < _spineList.Count - 1; i++)
-      {
-          _differencesSpinY.Add((_spineList[i+1] - _spineList[i]));
-      }
+            _ySpinTimerDownStop = _ySpinTimerStart;
+            _ySpinTimerStart = 0;
+            _ySpinTimerStart += Time.deltaTime;
+            // Add the y spin values in the list
+            _spineList.Add(_spinBase.y);
 
-      // Calculate the average of the min delta
-      _differencesSpinYMinAverage = _differencesSpinY.Average();
-      _spinTrackingMin = false;
+        }
 
-      // Calculate the time to achieve the normal posture again
-      if (Stopped){
+        // Calculate the delta of the min value
+        for (int i = 0; i < _spineList.Count - 1; i++)
+        {
+            _differencesSpinY.Add((_spineList[i + 1] - _spineList[i]));
+        }
 
-        _ySpinTimerHighStop = _ySpinTimerStart;
-        _ySpinTimerStart = 0;
-        _spinTracking = false;
-        _spineList.Clear();
-        _differencesSpinY.Clear();
-      }
+        // Calculate the average of the min delta
+        _differencesSpinYMinAverage = _differencesSpinY.Average();
+        _spinTrackingMin = false;
+
+        // Calculate the time to achieve the normal posture again
+        if (Stopped)
+        {
+
+            _ySpinTimerHighStop = _ySpinTimerStart;
+            _ySpinTimerStart = 0;
+            _spinTracking = false;
+            _spineList.Clear();
+            _differencesSpinY.Clear();
+        }
     }
 
     private void EmergencyStop(Kinect.Body body)
     {
-      _jointHandL = new Vector3(body.Joints[Kinect.JointType.HandLeft].Position.X, body.Joints[Kinect.JointType.HandLeft].Position.Y, body.Joints[Kinect.JointType.HandLeft].Position.Z);
-      _jointHead = new Vector3(body.Joints[Kinect.JointType.Head].Position.X, body.Joints[Kinect.JointType.Head].Position.Y, body.Joints[Kinect.JointType.Head].Position.Z);
+        _jointHandL = new Vector3(body.Joints[Kinect.JointType.HandLeft].Position.X, body.Joints[Kinect.JointType.HandLeft].Position.Y, body.Joints[Kinect.JointType.HandLeft].Position.Z);
+        _jointHead = new Vector3(body.Joints[Kinect.JointType.Head].Position.X, body.Joints[Kinect.JointType.Head].Position.Y, body.Joints[Kinect.JointType.Head].Position.Z);
+
+        float w = Math.Abs(_jointHandL.y - _jointHead.y);
+        Debug.Log("This is the abs value " + w + "and this is the threshold " + emergencythreshold);
 
         if (Math.Abs(_jointHandL.y - _jointHead.y) < emergencythreshold)
         {
             emergencycounter++;
-            if (emergencycounter > 150)
+            if (emergencycounter > 200)
             {
                 Destroy(gameObject);
             }
@@ -727,7 +733,7 @@ public class BodySourceView : MonoBehaviour
         else
         {
             {
-                Destroy(gameObject); emergencycounter = 0;
+                emergencycounter = 0;
             }
         }
     }
@@ -739,7 +745,7 @@ public class BodySourceView : MonoBehaviour
             Kinect.Joint sourceJoint = body.Joints[jt];
             Kinect.Joint? targetJoint = null;
 
-            if(_BoneMap.ContainsKey(jt))
+            if (_BoneMap.ContainsKey(jt))
             {
                 targetJoint = body.Joints[_BoneMap[jt]];
             }
@@ -748,11 +754,11 @@ public class BodySourceView : MonoBehaviour
             jointObj.localPosition = GetVector3FromJoint(sourceJoint);
 
             LineRenderer lr = jointObj.GetComponent<LineRenderer>();
-            if(targetJoint.HasValue)
+            if (targetJoint.HasValue)
             {
                 lr.SetPosition(0, jointObj.localPosition);
                 lr.SetPosition(1, GetVector3FromJoint(targetJoint.Value));
-                lr.SetColors(GetColorForState (sourceJoint.TrackingState), GetColorForState(targetJoint.Value.TrackingState));
+                lr.SetColors(GetColorForState(sourceJoint.TrackingState), GetColorForState(targetJoint.Value.TrackingState));
             }
             else
             {
@@ -765,14 +771,14 @@ public class BodySourceView : MonoBehaviour
     {
         switch (state)
         {
-        case Kinect.TrackingState.Tracked:
-            return Color.green;
+            case Kinect.TrackingState.Tracked:
+                return Color.green;
 
-        case Kinect.TrackingState.Inferred:
-            return Color.red;
+            case Kinect.TrackingState.Inferred:
+                return Color.red;
 
-        default:
-            return Color.black;
+            default:
+                return Color.black;
         }
     }
 

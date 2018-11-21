@@ -828,50 +828,41 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114741541377195970, guid: ccfe34ddd65465c4ea808705f3b3d18d,
+    - target: {fileID: 114396560836131152, guid: ccfe34ddd65465c4ea808705f3b3d18d,
         type: 2}
       propertyPath: BodySourceManager
       value: 
       objectReference: {fileID: 1698423884}
-    - target: {fileID: 114741541377195970, guid: ccfe34ddd65465c4ea808705f3b3d18d,
+    - target: {fileID: 114396560836131152, guid: ccfe34ddd65465c4ea808705f3b3d18d,
         type: 2}
       propertyPath: LeftAnkleText
       value: 
       objectReference: {fileID: 330599380}
-    - target: {fileID: 114741541377195970, guid: ccfe34ddd65465c4ea808705f3b3d18d,
+    - target: {fileID: 114396560836131152, guid: ccfe34ddd65465c4ea808705f3b3d18d,
         type: 2}
       propertyPath: LeftKneeText
       value: 
       objectReference: {fileID: 1604052276}
-    - target: {fileID: 114741541377195970, guid: ccfe34ddd65465c4ea808705f3b3d18d,
+    - target: {fileID: 114396560836131152, guid: ccfe34ddd65465c4ea808705f3b3d18d,
         type: 2}
       propertyPath: LeftHipText
       value: 
       objectReference: {fileID: 397466147}
-    - target: {fileID: 114741541377195970, guid: ccfe34ddd65465c4ea808705f3b3d18d,
+    - target: {fileID: 114396560836131152, guid: ccfe34ddd65465c4ea808705f3b3d18d,
         type: 2}
       propertyPath: RightAnkleText
       value: 
       objectReference: {fileID: 1561078809}
-    - target: {fileID: 114741541377195970, guid: ccfe34ddd65465c4ea808705f3b3d18d,
+    - target: {fileID: 114396560836131152, guid: ccfe34ddd65465c4ea808705f3b3d18d,
         type: 2}
       propertyPath: RightKneeText
       value: 
       objectReference: {fileID: 1885202125}
-    - target: {fileID: 114741541377195970, guid: ccfe34ddd65465c4ea808705f3b3d18d,
+    - target: {fileID: 114396560836131152, guid: ccfe34ddd65465c4ea808705f3b3d18d,
         type: 2}
       propertyPath: RightHipText
       value: 
       objectReference: {fileID: 1490159165}
-    - target: {fileID: 1646413871060916, guid: ccfe34ddd65465c4ea808705f3b3d18d, type: 2}
-      propertyPath: m_TagString
-      value: Kinect
-      objectReference: {fileID: 0}
-    - target: {fileID: 114741541377195970, guid: ccfe34ddd65465c4ea808705f3b3d18d,
-        type: 2}
-      propertyPath: BoneMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: a3dcdd110779d6b4696dadfc1b7788eb, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ccfe34ddd65465c4ea808705f3b3d18d, type: 2}
   m_IsPrefabAsset: 0
