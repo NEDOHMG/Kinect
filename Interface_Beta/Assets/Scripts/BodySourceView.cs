@@ -128,9 +128,46 @@ public class BodySourceView : MonoBehaviour
 
     #endregion
 
+
+    private static Texture2D _staticRectTexture;
+    private static GUIStyle _staticRectStyle;
+
+    public double SpineBaseCurrentAverage = 0.0;
+
+    // Note that this function is only meant to be called from OnGUI() functions.
+    public static void GUIDrawRect( Rect position, Color color )
+    {
+        if( _staticRectTexture == null )
+        {
+            _staticRectTexture = new Texture2D( 1, 1 );
+        }
+
+        if( _staticRectStyle == null )
+        {
+            _staticRectStyle = new GUIStyle();
+        }
+
+        _staticRectTexture.SetPixel( 0, 0, color );
+        _staticRectTexture.Apply();
+
+        _staticRectStyle.normal.background = _staticRectTexture;
+
+        GUI.Box( position, GUIContent.none, _staticRectStyle );
+    }
+
+    void OnGUI()
+    {
+        GUIDrawRect(new Rect(20, 220, 100, 100), StatusLightColor);
+        GUI.Label(new Rect(20, 340, 100, 20), "Status: " + ExerciseState);
+        GUI.Label(new Rect(20, 360, 100, 20), "Stopped: " + Stopped);
+        GUI.Label(new Rect(20, 380, 100, 20), "Calibrated: " + Calibrated);
+        GUI.Label(new Rect(20, 400, 900, 20), "Spine Base Average Delta: " + SpineBaseCurrentAverage.ToString());
+        GUI.Label(new Rect(20, 420, 900, 20), "Threshold: " + threshold.ToString());
+    }
+
     void start()
     {
-        threshold = calibrate();
+        //threshold = calibrate();
 
         //initialize the knee lateral lists
         LeftKneeLateralPositions = new List<double>();
@@ -309,7 +346,7 @@ public class BodySourceView : MonoBehaviour
         MotionTimer += (double)Time.deltaTime;
 
         //if subject starts moving down, change state to 1
-        if(!Stopped && ExerciseState == 0)
+        if(Calibrated && !Stopped && ExerciseState == 0)
         {
             ExerciseState = 1;
 
@@ -405,18 +442,19 @@ public class BodySourceView : MonoBehaviour
         }
 
         //get the absolute value delta maximum
-        double MaximumAbsoluteDelta = 0.0;
+        double AverageDelta = 0.0;
         for(int i = 0; i < SpineBaseVerticalDeltas.Count; i++)
         {
-            if(Math.Abs(SpineBaseVerticalDeltas[i]) > MaximumAbsoluteDelta)
-                MaximumAbsoluteDelta = Math.Abs(SpineBaseVerticalDeltas[i]);
+            AverageDelta += Math.Abs(SpineBaseVerticalDeltas[i]);
         }
+        AverageDelta = AverageDelta / SpineBaseVerticalDeltas.Count;
 
         //set Threshold
-        threshold = MaximumAbsoluteDelta;
+        threshold = AverageDelta;
 
         //calibrated
         Calibrated = true;
+        StatusLightColor = Color.green;
 
 
     }
@@ -443,6 +481,7 @@ public class BodySourceView : MonoBehaviour
             return;
         else if(SpineBaseVerticalPositions.Count > trackingsize)
         {
+
             //update the positions lists
             SpineBaseVerticalPositions.RemoveAt(0);
 
@@ -451,15 +490,32 @@ public class BodySourceView : MonoBehaviour
             SpineBaseVerticalDeltas.Add(SpineBaseVerticalPositions[trackingsize - 1] - SpineBaseVerticalPositions[trackingsize - 2]);
 
             //get the current average
-            double SpineBaseCurrentAverage = SpineBaseVerticalDeltas.Average();
-            if(Math.Abs(SpineBaseCurrentAverage) > SpineBaseAverageDelta)
-                SpineBaseAverageDelta = Math.Abs(SpineBaseCurrentAverage);
+            //SpineBaseCurrentAverage = SpineBaseVerticalDeltas.Average();
+
+            SpineBaseCurrentAverage = 0;
+
+            //if(Math.Abs(SpineBaseCurrentAverage) > SpineBaseAverageDelta)
+
+            double AverageDelta = 0.0;
+            for(int i = 0; i < SpineBaseVerticalDeltas.Count; i++)
+            {
+                AverageDelta += Math.Abs(SpineBaseVerticalDeltas[i]);
+            }
+            AverageDelta = AverageDelta / SpineBaseVerticalDeltas.Count;
+
+            SpineBaseCurrentAverage = AverageDelta;
+
+            //    SpineBaseAverageDelta = Math.Abs(SpineBaseCurrentAverage);
 
             //update stopped state
-            if(SpineBaseAverageDelta < threshold && !Stopped)
+            if(Math.Abs(SpineBaseCurrentAverage) <= Math.Abs(threshold) && !Stopped)
+            {
                 Stopped = true;
-            else if(SpineBaseAverageDelta > threshold && Stopped)
+            }
+            else if(Math.Abs(SpineBaseCurrentAverage) > Math.Abs(threshold) && Stopped)
+            {
                 Stopped = false;
+            }
 
         }
         else
