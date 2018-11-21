@@ -72,6 +72,13 @@ public class BodySourceView : MonoBehaviour
     private Vector3 _jointHandL;
     private Vector3 _jointHead;
 
+    //Variables for calculating threshold during start
+    public int calTrackingWindow = 3;
+    private List<double> _calspineList;
+    private List<double> _deltacalspineY;
+    private double _caldeltaAVG = 0.0;
+
+
     //Variables used to calculate knee lateral inputs
     public int LateralsWindowSize = 0;
     public List<double> LeftKneeLateralPositions;
@@ -267,7 +274,8 @@ public class BodySourceView : MonoBehaviour
 
 
                 //calibrate the Threshold
-                CalibrateThreshold(_spine.y);
+                //CalibrateThreshold(_spine.y);
+                calibrate(_spine.y);
 
                 //track knee lateral motion
                 TrackKneeLateralMotion(_kneeLeft.x, _kneeRight.x);
@@ -313,11 +321,100 @@ public class BodySourceView : MonoBehaviour
 
     #region Events
 
-    private double calibrate()
+    //Experimental Function to Calibrate the threshold variable
+    private void CalibrateThreshold(double CurrentSpineBaseVertical)
     {
-    //  private double currenttime =
-        return 0.05; //default value, change this when you implement the code
+        if(Calibrated)
+            return;
+
+        //get the size of the tracking window
+        if(StopWindowSize == 0)
+        {
+            StopWindowSize = (int)(fps * TrackingWindow);
+            return;
+        }
+        int trackingsize = StopWindowSize;
+
+        //add the new positions to the positions lists
+        SpineBaseVerticalPositions.Add(CurrentSpineBaseVertical);
+
+        //still need more values
+        if(SpineBaseVerticalPositions.Count < trackingsize)
+            return;
+
+        //calculate our first delta list
+        for(int i = 0; i < trackingsize - 1; i++)
+        {
+            SpineBaseVerticalDeltas.Add(SpineBaseVerticalPositions[i + 1] - SpineBaseVerticalPositions[i]);
+        }
+
+        //get the absolute value delta maximum
+        double AverageDelta = 0.0;
+        for(int i = 0; i < SpineBaseVerticalDeltas.Count; i++)
+        {
+            AverageDelta += Math.Abs(SpineBaseVerticalDeltas[i]);
+        }
+        AverageDelta = AverageDelta / SpineBaseVerticalDeltas.Count;
+
+        //set Threshold
+        threshold = AverageDelta;
+
+        //calibrated
+        Calibrated = true;
+        StatusLightColor = Color.green;
+        colorActuator = 100;
+
+
     }
+
+    private void calibrate(double currentSpinePoint)
+    {
+        if (Calibrated == true)
+        {
+            //Console.WriteLine("Already calibrated!!");
+            return;
+        }
+
+        else if (Calibrated == false)
+        {
+            //calculate the number of samples for the tracking time (3 seconds in this case)
+            if(StopWindowSize == 0)
+            {
+                StopWindowSize = (int)(fps * calTrackingWindow);
+                return;
+            }
+            int trackingtime = StopWindowSize;
+
+            //add newest data point to our list
+            _calspineList.Add(currentSpinePoint);
+
+            //if we dont have 3 seconds of values yet, stop here
+            if(_calspineList.Count < trackingtime)
+                return;
+
+
+            //get the delta values
+            for (int i = 0; i < trackingtime - 1; i++)
+            {
+                _deltacalspineY.Add(_calspineList[i + 1] - _calspineList[i]);
+            }
+
+            //calculate the average of the delta values
+            double temp = 0.0;
+            for (int i = 0; i < _deltacalspineY.Count; i++)
+            {
+                temp += Math.Abs(_deltacalspineY[i]); //if needed, the value must be rounded off
+            }
+            _caldeltaAVG = temp / _deltacalspineY.Count;
+
+            //Threshold value
+            threshold = Math.Abs(_caldeltaAVG);
+            Calibrated = true;
+            StatusLightColor = Color.green;
+            colorActuator = 100;
+        }
+    }
+
 
     private GameObject CreateBodyObject(ulong id)
     {
@@ -422,50 +519,7 @@ public class BodySourceView : MonoBehaviour
         }
     }
 
-    //Experimental Function to Calibrate the threshold variable
-    private void CalibrateThreshold(double CurrentSpineBaseVertical)
-    {
-        if(Calibrated)
-            return;
 
-        //get the size of the tracking window
-        if(StopWindowSize == 0)
-        {
-            StopWindowSize = (int)(fps * TrackingWindow);
-            return;
-        }
-        int trackingsize = StopWindowSize;
-
-        //add the new positions to the positions lists
-        SpineBaseVerticalPositions.Add(CurrentSpineBaseVertical);
-
-        //still need more values
-        if(SpineBaseVerticalPositions.Count < trackingsize)
-            return;
-
-        //calculate our first delta list
-        for(int i = 0; i < trackingsize - 1; i++)
-        {
-            SpineBaseVerticalDeltas.Add(SpineBaseVerticalPositions[i + 1] - SpineBaseVerticalPositions[i]);
-        }
-
-        //get the absolute value delta maximum
-        double AverageDelta = 0.0;
-        for(int i = 0; i < SpineBaseVerticalDeltas.Count; i++)
-        {
-            AverageDelta += Math.Abs(SpineBaseVerticalDeltas[i]);
-        }
-        AverageDelta = AverageDelta / SpineBaseVerticalDeltas.Count;
-
-        //set Threshold
-        threshold = AverageDelta;
-
-        //calibrated
-        Calibrated = true;
-        StatusLightColor = Color.green;
-
-
-    }
 
     //Experimental function to potentially detect when a subject has stopped motion
     private void DetectStop(double CurrentSpineBaseVertical)
