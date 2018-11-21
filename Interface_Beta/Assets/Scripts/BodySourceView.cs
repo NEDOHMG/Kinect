@@ -31,6 +31,7 @@ public class BodySourceView : MonoBehaviour
     //Subject state. 0 = stopped, extended. 1 = flexing. 2 = stopped, flexed. 3 = extending.
     public int ExerciseState = 0;
     public static Color StatusLightColor = Color.red;
+    public int colorActuator = 1001;
 
     // Variables used to calculte the flexion and extension angles of knees and hip
     public double LeftKneeFlexionAngle;
@@ -362,6 +363,7 @@ public class BodySourceView : MonoBehaviour
             MotionTimer = 0.0;
 
             StatusLightColor = Color.yellow;
+            colorActuator = 1010;
         }
         //if subject stops moving down, change state to 2
         else if(Stopped && ExerciseState == 1)
@@ -375,6 +377,7 @@ public class BodySourceView : MonoBehaviour
             FlexionTime = MotionTimer;
 
             StatusLightColor = Color.green;
+            colorActuator = 100;
         }
         //if subject starts moving up, change state to 3
         else if(!Stopped && ExerciseState == 2)
@@ -393,6 +396,7 @@ public class BodySourceView : MonoBehaviour
             MotionTimer = 0.0;
 
             StatusLightColor = Color.yellow;
+            colorActuator = 1010;
         }
         //if subject stops moving up, change state to 4
         else if(Stopped && ExerciseState == 3)
@@ -406,12 +410,16 @@ public class BodySourceView : MonoBehaviour
             ExtensionTime = MotionTimer;
 
             StatusLightColor = Color.green;
+            colorActuator = 100;
 
             //upload current values to neural network here
         }
 
         if(!Calibrated)
+        {
             StatusLightColor = Color.red;
+            colorActuator = 1001;
+        }
     }
 
     //Experimental Function to Calibrate the threshold variable
