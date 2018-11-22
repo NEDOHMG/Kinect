@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class ColorBehaviour : MonoBehaviour {
 
-	//GameObject referenceKinect;
+	// References to find the objects
 	GameObject referenceKinect;
 	GameObject referenceColorGreen;
 	GameObject referenceColorYellow;
 	GameObject referenceColorRed;
+    
+    // Object to access the kinect  
 	BodySourceView kinect;
-    MeshRenderer renderGreen;
-	MeshRenderer renderYellow;
-	MeshRenderer renderRed;
 
-	// Use this for initialization
-	void Start () {
+    // Objects to render differently in the light
+    Renderer renderGreen;
+    Renderer renderYellow;
+	Renderer renderRed;
+
+    // Use this for initialization
+    void Start () {
 
 		// find the references of for kinect
 		referenceKinect = GameObject.FindGameObjectWithTag("Kinect");
@@ -23,15 +27,30 @@ public class ColorBehaviour : MonoBehaviour {
 		
 		// access to the child objects and obtenin the MeshRender references
 		referenceColorGreen = GameObject.FindGameObjectWithTag("Green");
-		renderGreen = referenceColorGreen.GetComponent<MeshRenderer>();
+		renderGreen = referenceColorGreen.GetComponent<Renderer>();
 
 		referenceColorYellow = GameObject.FindGameObjectWithTag("Yellow");
-		renderYellow = referenceColorYellow.GetComponent<MeshRenderer>();
+		renderYellow = referenceColorYellow.GetComponent<Renderer>();
 
 		referenceColorRed = GameObject.FindGameObjectWithTag("Red");
-		renderRed = referenceColorRed.GetComponent<MeshRenderer>();
+		renderRed = referenceColorRed.GetComponent<Renderer>();
 
-	}
+        renderGreen.material.shader = Shader.Find("_Color");
+        renderGreen.material.SetColor("_Color", Color.black);
+        renderGreen.material.shader = Shader.Find("Specular");
+        renderGreen.material.SetColor("_SpecColor", Color.green);
+
+        renderYellow.material.shader = Shader.Find("_Color");
+        renderYellow.material.SetColor("_Color", Color.black);
+        renderYellow.material.shader = Shader.Find("Specular");
+        renderYellow.material.SetColor("_SpecColor", Color.yellow);
+
+        renderRed.material.shader = Shader.Find("_Color");
+        renderRed.material.SetColor("_Color", Color.black);
+        renderRed.material.shader = Shader.Find("Specular");
+        renderRed.material.SetColor("_SpecColor", Color.red);
+
+    }
 	
 	// Update is called once per frame
 	// This will update green, yellow, red
@@ -49,9 +68,11 @@ public class ColorBehaviour : MonoBehaviour {
 			renderRed.material.color = Color.black;
 
 		} else if(kinect.colorActuator == 1001){
-			renderGreen.material.color = Color.black;
-			renderYellow.material.color = Color.black;
-			renderRed.material.color = Color.red;
-		}
+
+            renderGreen.material.color = Color.black;
+            renderYellow.material.color = Color.black;
+            renderRed.material.color = Color.red;
+
+        }
 	}
 }
