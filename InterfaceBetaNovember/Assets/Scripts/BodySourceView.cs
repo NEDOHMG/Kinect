@@ -97,13 +97,36 @@ public class BodySourceView : MonoBehaviour
     public List<double> SpineBaseVerticalDeltas;
     public double SpineBaseAverageDelta = 0.0;
 
+    // Vectors for the angles
+    Vector3 _footLeft;
+    Vector3 _ankleLeft;
+    Vector3 _kneeLeft;
+    Vector3 _hipLeft;
+
+    // Center
+    Vector3 _spine;
+
+    // Right
+    Vector3 _footRight;
+    Vector3 _ankleRight;
+    Vector3 _kneeRight;
+    Vector3 _hipRightt;
+
     private Dictionary<ulong, GameObject> _Bodies = new Dictionary<ulong, GameObject>();
     private BodySourceManager _BodyManager;
     private AnglesCalculation _anglesCalculation;
 
+    // Currently working with this ones
+    // Vectors for the position of the joints
+    public Vector3 _RightShouldAvatar;
+    public Vector3 _RightArmAvatar;
+    public Vector3 _RightHandAvatar;
+
     #endregion
 
-    #region Joints
+    #region Dictionary Joints
+
+    // This dictionary is used to generate the avatar with cubs
 
     private Dictionary<Kinect.JointType, Kinect.JointType> _BoneMap = new Dictionary<Kinect.JointType, Kinect.JointType>()
     {
@@ -128,8 +151,8 @@ public class BodySourceView : MonoBehaviour
         { Kinect.JointType.ThumbRight, Kinect.JointType.HandRight },
         { Kinect.JointType.HandRight, Kinect.JointType.WristRight },
         { Kinect.JointType.WristRight, Kinect.JointType.ElbowRight },
-        { Kinect.JointType.ElbowRight, Kinect.JointType.ShoulderRight },
-        { Kinect.JointType.ShoulderRight, Kinect.JointType.SpineShoulder },
+        { Kinect.JointType.ElbowRight, Kinect.JointType.LegLeft },
+        { Kinect.JointType.LegLeft, Kinect.JointType.SpineShoulder },
 
         { Kinect.JointType.SpineBase, Kinect.JointType.SpineMid },
         { Kinect.JointType.SpineMid, Kinect.JointType.SpineShoulder },
@@ -232,24 +255,29 @@ public class BodySourceView : MonoBehaviour
                 // Get the location of the joints in 3D space
 
                 // Left
-                Vector3 _footLeft = new Vector3(body.Joints[Kinect.JointType.FootLeft].Position.X, body.Joints[Kinect.JointType.FootLeft].Position.Y, body.Joints[Kinect.JointType.FootLeft].Position.Z);
-                Vector3 _ankleLeft = new Vector3(body.Joints[Kinect.JointType.AnkleLeft].Position.X, body.Joints[Kinect.JointType.AnkleLeft].Position.Y, body.Joints[Kinect.JointType.AnkleLeft].Position.Z);
-                Vector3 _kneeLeft = new Vector3(body.Joints[Kinect.JointType.KneeLeft].Position.X, body.Joints[Kinect.JointType.KneeLeft].Position.Y, body.Joints[Kinect.JointType.KneeLeft].Position.Z);
-                Vector3 _hipLeft = new Vector3(body.Joints[Kinect.JointType.HipLeft].Position.X, body.Joints[Kinect.JointType.HipLeft].Position.Y, body.Joints[Kinect.JointType.HipLeft].Position.Z);
+                _footLeft = new Vector3(body.Joints[Kinect.JointType.FootLeft].Position.X, body.Joints[Kinect.JointType.FootLeft].Position.Y, body.Joints[Kinect.JointType.FootLeft].Position.Z);
+                _ankleLeft = new Vector3(body.Joints[Kinect.JointType.AnkleLeft].Position.X, body.Joints[Kinect.JointType.AnkleLeft].Position.Y, body.Joints[Kinect.JointType.AnkleLeft].Position.Z);
+                _kneeLeft = new Vector3(body.Joints[Kinect.JointType.KneeLeft].Position.X, body.Joints[Kinect.JointType.KneeLeft].Position.Y, body.Joints[Kinect.JointType.KneeLeft].Position.Z);
+                _hipLeft = new Vector3(body.Joints[Kinect.JointType.HipLeft].Position.X, body.Joints[Kinect.JointType.HipLeft].Position.Y, body.Joints[Kinect.JointType.HipLeft].Position.Z);
 
                 // Center
-                Vector3 _spine = new Vector3(body.Joints[Kinect.JointType.SpineBase].Position.X, body.Joints[Kinect.JointType.SpineBase].Position.Y, body.Joints[Kinect.JointType.SpineBase].Position.Z);
+                _spine = new Vector3(body.Joints[Kinect.JointType.SpineBase].Position.X, body.Joints[Kinect.JointType.SpineBase].Position.Y, body.Joints[Kinect.JointType.SpineBase].Position.Z);
 
                 // Right
-                Vector3 _footRight = new Vector3(body.Joints[Kinect.JointType.FootRight].Position.X, body.Joints[Kinect.JointType.FootRight].Position.Y, body.Joints[Kinect.JointType.FootRight].Position.Z);
-                Vector3 _ankleRight = new Vector3(body.Joints[Kinect.JointType.AnkleRight].Position.X, body.Joints[Kinect.JointType.AnkleRight].Position.Y, body.Joints[Kinect.JointType.AnkleRight].Position.Z);
-                Vector3 _kneeRight = new Vector3(body.Joints[Kinect.JointType.KneeRight].Position.X, body.Joints[Kinect.JointType.KneeRight].Position.Y, body.Joints[Kinect.JointType.KneeRight].Position.Z);
-                Vector3 _hipRightt = new Vector3(body.Joints[Kinect.JointType.HipRight].Position.X, body.Joints[Kinect.JointType.HipRight].Position.Y, body.Joints[Kinect.JointType.HipRight].Position.Z);
+                _footRight = new Vector3(body.Joints[Kinect.JointType.FootRight].Position.X, body.Joints[Kinect.JointType.FootRight].Position.Y, body.Joints[Kinect.JointType.FootRight].Position.Z);
+                _ankleRight = new Vector3(body.Joints[Kinect.JointType.AnkleRight].Position.X, body.Joints[Kinect.JointType.AnkleRight].Position.Y, body.Joints[Kinect.JointType.AnkleRight].Position.Z);
+                _kneeRight = new Vector3(body.Joints[Kinect.JointType.KneeRight].Position.X, body.Joints[Kinect.JointType.KneeRight].Position.Y, body.Joints[Kinect.JointType.KneeRight].Position.Z);
+                _hipRightt = new Vector3(body.Joints[Kinect.JointType.HipRight].Position.X, body.Joints[Kinect.JointType.HipRight].Position.Y, body.Joints[Kinect.JointType.HipRight].Position.Z);
 
                 _anglesCalculation = gameObject.GetComponent<AnglesCalculation>(); // Initialize the AnglesCalculation class
 
                 // Vector required for the SpineBase joint
                 _spinBase = new Vector3(body.Joints[Kinect.JointType.SpineBase].Position.X, body.Joints[Kinect.JointType.SpineBase].Position.Y, body.Joints[Kinect.JointType.SpineBase].Position.Z);
+
+                // Position of the hands
+                _RightShouldAvatar = new Vector3(body.Joints[Kinect.JointType.LegLeft].Position.X, body.Joints[Kinect.JointType.LegLeft].Position.Y, body.Joints[Kinect.JointType.LegLeft].Position.Z); 
+                _RightArmAvatar = new Vector3(body.Joints[Kinect.JointType.ElbowRight].Position.X, body.Joints[Kinect.JointType.ElbowRight].Position.Y, body.Joints[Kinect.JointType.ElbowRight].Position.Z); 
+                _RightHandAvatar = new Vector3(body.Joints[Kinect.JointType.HandRight].Position.X, body.Joints[Kinect.JointType.HandRight].Position.Y, body.Joints[Kinect.JointType.HandRight].Position.Z); 
 
                 // Calculation of the spin Y delta
                 if (_spinTracking == true)
@@ -720,7 +748,7 @@ public class BodySourceView : MonoBehaviour
         _jointHead = new Vector3(body.Joints[Kinect.JointType.Head].Position.X, body.Joints[Kinect.JointType.Head].Position.Y, body.Joints[Kinect.JointType.Head].Position.Z);
 
         float w = Math.Abs(_jointHandL.y - _jointHead.y);
-        Debug.Log("This is the abs value " + w + "and this is the threshold " + emergencythreshold);
+        //Debug.Log("This is the abs value " + w + "and this is the threshold " + emergencythreshold);
 
         if (Math.Abs(_jointHandL.y - _jointHead.y) < emergencythreshold)
         {

@@ -9,6 +9,11 @@ TagManager:
   - Yellow
   - Kinect
   - CameraTarget
+  - RightArm
+  - RightShoulder
+  - RightHand
+  - Controllers
+  - Spine
   layers:
   - Default
   - TransparentFX
