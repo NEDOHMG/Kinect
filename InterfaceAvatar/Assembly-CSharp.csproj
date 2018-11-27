@@ -147,6 +147,7 @@
      <Compile Include="Assets\Scripts\AnglesCalculation.cs" />
      <Compile Include="Assets\Scripts\BodySourceManager.cs" />
      <Compile Include="Assets\Scripts\KinectAvatar.cs" />
+     <Compile Include="Assets\Scripts\LampColor.cs" />
      <Compile Include="Assets\Scripts\NeuralNet.cs" />
      <Compile Include="Assets\Scripts\VectorExtensions.cs" />
      <None Include="Assets\Models\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_eye.shader" />
