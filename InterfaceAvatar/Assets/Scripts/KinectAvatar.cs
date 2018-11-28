@@ -102,7 +102,7 @@ public class KinectAvatar : MonoBehaviour
     public double ExtensionTime;
 
     //Variable used to determine the number of seconds we are tracking joint deltas
-    public int TrackingWindow = 3;
+    public int TrackingWindow = 2;
 
     //Boolean set to true if the subject has stopped moving (average  of spine base y-delta list is less than threshold value)
     public bool Calibrated = false;
@@ -172,6 +172,8 @@ public class KinectAvatar : MonoBehaviour
     private static GUIStyle _staticRectStyle;
 
     public double SpineBaseCurrentAverage = 0.0;
+
+    public double noisefilter;
 
     #endregion
 
@@ -269,6 +271,10 @@ public class KinectAvatar : MonoBehaviour
         filename = "log_" + dt.ToString("yyyy-MM-dd_HH-mm-ss");
         logfile = preamble + filename + ".txt";
 
+        threshold = 0.0;
+        noisefilter = 0.0001;
+        TrackingWindow = 2;
+
     }
 
     //write an entry to the log file
@@ -331,8 +337,8 @@ public class KinectAvatar : MonoBehaviour
         //EmergencyStop(body);
 
         //calibrate the Threshold
-        //CalibrateThreshold(_spine.y);
-        calibrate(_spinBase.y);
+        CalibrateThreshold(_spine.y);
+        //calibrate(_spinBase.y);
 
         //track knee lateral motion
         TrackKneeLateralMotion(_kneeLeft.x, _kneeRight.x);
@@ -497,7 +503,7 @@ public class KinectAvatar : MonoBehaviour
         AverageDelta = AverageDelta / SpineBaseVerticalDeltas.Count;
 
         //set Threshold
-        threshold = AverageDelta;
+        threshold = Math.Abs(AverageDelta) + noisefilter;
 
         //calibrated
         Calibrated = true;
@@ -628,7 +634,7 @@ public class KinectAvatar : MonoBehaviour
             colorActuator = 100;
 
             //upload current values to neural network here
-            WriteLog(LeftKneeFlexionAngle + " " + LeftKneeExtensionAngle + " " + RightKneeFlexionAngle + " " + RightKneeExtensionAngle + " " + LeftHipFlexionAngle + " " + LeftHipExtensionAngle + " " + RightHipFlexionAngle + " " + RightHipExtensionAngle + " " + LeftKneeAverageDelta + " " + RightKneeAverageDelta + " " + SpineBaseAverageDelta + " " + FlexionTime + " " + ExtensionTime);
+            WriteLog(LeftKneeFlexionAngle + " " + LeftKneeExtensionAngle + " " + RightKneeFlexionAngle + " " + RightKneeExtensionAngle + " " + LeftHipFlexionAngle + " " + LeftHipExtensionAngle + " " + RightHipFlexionAngle + " " + RightHipExtensionAngle + " " + LeftKneeAverageDelta + " " + RightKneeAverageDelta + " " + _differencesSpinYMaxAverage + " " + _differencesSpinYMinAverage + " " + FlexionTime + " " + ExtensionTime);
         }
 
         if (!Calibrated)
@@ -735,8 +741,8 @@ public class KinectAvatar : MonoBehaviour
             //update the deltas lists
             LeftKneeLateralDeltas.RemoveAt(0);
             RightKneeLateralDeltas.RemoveAt(0);
-            LeftKneeLateralDeltas.Add(LeftKneeLateralPositions[trackingsize - 1] - LeftKneeLateralPositions[trackingsize - 2]);
-            RightKneeLateralDeltas.Add(RightKneeLateralPositions[trackingsize - 1] - RightKneeLateralPositions[trackingsize - 2]);
+            LeftKneeLateralDeltas.Add(Math.Abs(LeftKneeLateralPositions[trackingsize - 1] - LeftKneeLateralPositions[trackingsize - 2]));
+            RightKneeLateralDeltas.Add(Math.Abs(RightKneeLateralPositions[trackingsize - 1] - RightKneeLateralPositions[trackingsize - 2]));
 
             //get the delta averages
             double LeftKneeCurrentAverage = LeftKneeLateralDeltas.Average();
