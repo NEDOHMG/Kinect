@@ -149,6 +149,7 @@
      <Compile Include="Assets\Scripts\KinectAvatar.cs" />
      <Compile Include="Assets\Scripts\LampColor.cs" />
      <Compile Include="Assets\Scripts\NeuralNet.cs" />
+     <Compile Include="Assets\Scripts\PGMactuation.cs" />
      <Compile Include="Assets\Scripts\VectorExtensions.cs" />
      <None Include="Assets\Models\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_eye.shader" />
      <None Include="Assets\Models\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_fuku.shader" />
@@ -163,16 +164,16 @@
      <None Include="Assets\Models\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_hada.shader" />
      <None Include="Assets\Models\UnityChan\Models\UnityChanShader\Shader\Unitychan_chara_hada_blend.shader" />
  <Reference Include="UnityEditor.StandardEvents">
- <HintPath>D:/InterfaceAvatar/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+ <HintPath>C:/Users/avega/Documents/Github/Kinect/InterfaceAvatar/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro.Editor">
- <HintPath>D:/InterfaceAvatar/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+ <HintPath>C:/Users/avega/Documents/Github/Kinect/InterfaceAvatar/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.PackageManagerUI.Editor">
- <HintPath>D:/InterfaceAvatar/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+ <HintPath>C:/Users/avega/Documents/Github/Kinect/InterfaceAvatar/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro">
- <HintPath>D:/InterfaceAvatar/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+ <HintPath>C:/Users/avega/Documents/Github/Kinect/InterfaceAvatar/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
