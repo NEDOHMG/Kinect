@@ -5,7 +5,8 @@ using System.IO.Ports;
 
 public class LedDebug : MonoBehaviour {
 
-    SerialPort myData = new SerialPort("COM4", 115200);
+    // Change depending of the behaviour of the COM 
+    SerialPort myData = new SerialPort("COM5", 115200);
 
     int inputUser = 5;
 
@@ -42,29 +43,6 @@ public class LedDebug : MonoBehaviour {
             Debug.Log("Com closed");
             inputUser = 5;
         }
-
-    }
-
-    public void ledOn(int i)
-    {
-        myData.Open(); //Open the serial stream
-        Debug.Log("Com open");
-
-        if (i == 1)
-        {
-            myData.WriteLine("1");
-            Debug.Log("Data sent");
-            i = 5;
-        }
-        else if (i == 0)
-        {
-            myData.WriteLine("0");
-            Debug.Log("Data sent");
-            i = 5;
-        }
-
-        myData.Close();
-        Debug.Log("Com closed");
 
     }
 

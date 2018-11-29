@@ -3,12 +3,13 @@
  
 BluetoothSerial SerialBT;
 
-int ledPin = 25;
+int ledPin = 15;
 boolean LED = false;
 int w = 0;
 
  
 void setup() {
+  
   Serial.begin(115200);
  
   pinMode(ledPin, OUTPUT);
