@@ -1,2 +1,3 @@
 # Kinect
-Kinect program used to calculate the angles 
+
+Repository with theh current stable version of the visual interface 
