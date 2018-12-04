@@ -18,6 +18,7 @@ public class PlayerAnimator : MonoBehaviour {
         {
             animator.SetBool("isActive", true);
             animator.SetBool("isNotActive", true);     
+
         } else if (Input.GetKeyDown(KeyCode.S))
         {
             animator.SetBool("isActive", false);
