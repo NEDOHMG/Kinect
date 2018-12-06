@@ -649,7 +649,7 @@ public class KinectAvatar : MonoBehaviour
             double resultProbeLeft = 180.0 - Math.Abs(LeftKneeExtensionAngle - LeftKneeFlexionAngle);
             double resultProbeRight = 180.0 - Math.Abs(RightKneeExtensionAngle - RightKneeFlexionAngle);
 
-            if (resultProbeLeft > 45.0 && resultProbeRight > 45.0 && maxDeltaLeft > 0.1 && maxDeltaRight > 0.1)
+            if (resultProbeLeft > 60.0 && resultProbeRight > 60.0 && maxDeltaLeft > 0.1 && maxDeltaRight > 0.1)
             {
                 resistanceMode = false;
             } else

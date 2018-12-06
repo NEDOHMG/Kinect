@@ -143,8 +143,8 @@
      <Compile Include="Assets\Scripts\BodySourceManager.cs" />
      <Compile Include="Assets\Scripts\KinectAvatar.cs" />
      <Compile Include="Assets\Scripts\LampColor.cs" />
+     <Compile Include="Assets\Scripts\MyAnimator.cs" />
      <Compile Include="Assets\Scripts\NeuralNet.cs" />
-     <Compile Include="Assets\Scripts\PGMactuation.cs" />
      <Compile Include="Assets\Scripts\PlayerAnimator.cs" />
      <Compile Include="Assets\Scripts\Track.cs" />
      <Compile Include="Assets\Scripts\VectorExtensions.cs" />
