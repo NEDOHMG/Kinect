@@ -54,6 +54,10 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Kinect\Editor\KinectCopyPluginDataHelper.cs" />
+     <Compile Include="Assets\Oculus\Avatar\Editor\AvatarMaterialEditor.cs" />
+     <Compile Include="Assets\Oculus\Platform\Editor\GUIHelper.cs" />
+     <Compile Include="Assets\Oculus\Platform\Editor\OculusPlatformSettingsEditor.cs" />
+     <Compile Include="Assets\Oculus\Platform\Editor\OculusStandalonePlatformResponse.cs" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>D:/Developer/Unity/NewGymInterface/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>
@@ -352,6 +356,12 @@
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
       <Project>{6FC273F9-1CB3-B5B2-49A3-23B1106C3284}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
+    <ProjectReference Include="Oculus.VR.Editor.csproj">
+      <Project>{9E686F57-2C1E-A1FA-8677-E6DFC0E799BA}</Project>      <Name>Oculus.VR.Editor</Name>    </ProjectReference>
+    <ProjectReference Include="Oculus.VR.Scripts.Editor.csproj">
+      <Project>{7FBDDFCA-F527-60C2-6903-75BAAE336FE1}</Project>      <Name>Oculus.VR.Scripts.Editor</Name>    </ProjectReference>
+    <ProjectReference Include="Oculus.VR.csproj">
+      <Project>{EC880944-95C5-61AB-9E47-3913F2CFBF16}</Project>      <Name>Oculus.VR</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

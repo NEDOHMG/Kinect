@@ -6,7 +6,7 @@ using System.IO.Ports;
 public class BluetoothController : MonoBehaviour
 {
 
-    SerialPort myData = new SerialPort("COM4", 115200);
+    SerialPort myData = new SerialPort("COM6", 115200);
 
     int currentState = 5;
     int previousState = 5;
