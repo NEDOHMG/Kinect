@@ -18,27 +18,27 @@ public class KinectAvatar : MonoBehaviour
     public BodySourceManager _BodyManager;
 
     // Reference of the avatar 
-    public GameObject _UnityChan;
+    //public GameObject _UnityChan;
 
     // Joints reference of the avatar 
-    public GameObject Ref;
-    public GameObject Hips;
-    public GameObject LeftUpLeg;
-    public GameObject LeftLeg;
-    public GameObject RightUpLeg;
-    public GameObject RightLeg;
-    public GameObject Spine1;
-    public GameObject Spine2;
-    public GameObject LeftShoulder;
-    public GameObject LeftArm;
-    public GameObject LeftForeArm;
-    public GameObject LeftHand;
-    public GameObject RightShoulder;
-    public GameObject RightArm;
-    public GameObject RightForeArm;
-    public GameObject RightHand;
-    public GameObject Neck;
-    public GameObject Head;
+    //public GameObject Ref;
+    //public GameObject Hips;
+    //public GameObject LeftUpLeg;
+    //public GameObject LeftLeg;
+    //public GameObject RightUpLeg;
+    //public GameObject RightLeg;
+    //public GameObject Spine1;
+    //public GameObject Spine2;
+    //public GameObject LeftShoulder;
+    //public GameObject LeftArm;
+    //public GameObject LeftForeArm;
+    //public GameObject LeftHand;
+    //public GameObject RightShoulder;
+    //public GameObject RightArm;
+    //public GameObject RightForeArm;
+    //public GameObject RightHand;
+    //public GameObject Neck;
+    //public GameObject Head;
 
     // Quaternion used in the rotation of the joints
     Quaternion SpineBase;
@@ -246,25 +246,25 @@ public class KinectAvatar : MonoBehaviour
         _anglesCalculation = gameObject.GetComponent<AnglesCalculation>(); // Initialize the AnglesCalculation class
 
         // Initialize the objects of the avatar 
-        Ref = _UnityChan.transform.Find("Character1_Reference").gameObject;
-        Hips = Ref.gameObject.transform.Find("Character1_Hips").gameObject;
-        LeftUpLeg = Hips.transform.Find("Character1_LeftUpLeg").gameObject;
-        LeftLeg = LeftUpLeg.transform.Find("Character1_LeftLeg").gameObject;
-        RightUpLeg = Hips.transform.Find("Character1_RightUpLeg").gameObject;
-        RightLeg = RightUpLeg.transform.Find("Character1_RightLeg").gameObject;
-        Spine1 = Hips.transform.Find("Character1_Spine").
-        gameObject.transform.Find("Character1_Spine1").gameObject;
-        Spine2 = Spine1.transform.Find("Character1_Spine2").gameObject;
-        LeftShoulder = Spine2.transform.Find("Character1_LeftShoulder").gameObject;
-        LeftArm = LeftShoulder.transform.Find("Character1_LeftArm").gameObject;
-        LeftForeArm = LeftArm.transform.Find("Character1_LeftForeArm").gameObject;
-        LeftHand = LeftForeArm.transform.Find("Character1_LeftHand").gameObject;
-        RightShoulder = Spine2.transform.Find("Character1_RightShoulder").gameObject;
-        RightArm = RightShoulder.transform.Find("Character1_RightArm").gameObject;
-        RightForeArm = RightArm.transform.Find("Character1_RightForeArm").gameObject;
-        RightHand = RightForeArm.transform.Find("Character1_RightHand").gameObject;
-        Neck = Spine2.transform.Find("Character1_Neck").gameObject;
-        Head = Neck.transform.Find("Character1_Head").gameObject;
+        //Ref = _UnityChan.transform.Find("Character1_Reference").gameObject;
+        //Hips = Ref.gameObject.transform.Find("Character1_Hips").gameObject;
+        //LeftUpLeg = Hips.transform.Find("Character1_LeftUpLeg").gameObject;
+        //LeftLeg = LeftUpLeg.transform.Find("Character1_LeftLeg").gameObject;
+        //RightUpLeg = Hips.transform.Find("Character1_RightUpLeg").gameObject;
+        //RightLeg = RightUpLeg.transform.Find("Character1_RightLeg").gameObject;
+        //Spine1 = Hips.transform.Find("Character1_Spine").
+        //gameObject.transform.Find("Character1_Spine1").gameObject;
+        //Spine2 = Spine1.transform.Find("Character1_Spine2").gameObject;
+        //LeftShoulder = Spine2.transform.Find("Character1_LeftShoulder").gameObject;
+        //LeftArm = LeftShoulder.transform.Find("Character1_LeftArm").gameObject;
+        //LeftForeArm = LeftArm.transform.Find("Character1_LeftForeArm").gameObject;
+        //LeftHand = LeftForeArm.transform.Find("Character1_LeftHand").gameObject;
+        //RightShoulder = Spine2.transform.Find("Character1_RightShoulder").gameObject;
+        //RightArm = RightShoulder.transform.Find("Character1_RightArm").gameObject;
+        //RightForeArm = RightArm.transform.Find("Character1_RightForeArm").gameObject;
+        //RightHand = RightForeArm.transform.Find("Character1_RightHand").gameObject;
+        //Neck = Spine2.transform.Find("Character1_Neck").gameObject;
+        //Head = Neck.transform.Find("Character1_Head").gameObject;
 
         //initialize the knee lateral lists
         LeftKneeLateralPositions = new List<double>();
@@ -420,28 +420,28 @@ public class KinectAvatar : MonoBehaviour
 
         var comp2 = Quaternion.AngleAxis(90, new Vector3(0, 1, 0)) * Quaternion.AngleAxis(-90, new Vector3(0, 0, 1));
 
-        Spine1.transform.rotation = SpineMid * comp2;
+        //Spine1.transform.rotation = SpineMid * comp2;
 
-        RightArm.transform.rotation = ElbowRight * comp2;
-        RightForeArm.transform.rotation = WristRight * comp2;
-        RightHand.transform.rotation = HandRight * comp2;
+        //RightArm.transform.rotation = ElbowRight * comp2;
+        //RightForeArm.transform.rotation = WristRight * comp2;
+        //RightHand.transform.rotation = HandRight * comp2;
 
-        LeftArm.transform.rotation = ElbowLeft * comp2;
-        LeftForeArm.transform.rotation = WristLeft * comp2;
-        LeftHand.transform.rotation = HandLeft * comp2;
+        //LeftArm.transform.rotation = ElbowLeft * comp2;
+        //LeftForeArm.transform.rotation = WristLeft * comp2;
+        //LeftHand.transform.rotation = HandLeft * comp2;
 
-        RightUpLeg.transform.rotation = KneeRight * comp2;
-        RightLeg.transform.rotation = AnkleRight * comp2;
+        //RightUpLeg.transform.rotation = KneeRight * comp2;
+        //RightLeg.transform.rotation = AnkleRight * comp2;
 
-        LeftUpLeg.transform.rotation = KneeLeft * Quaternion.AngleAxis(-90, new Vector3(0, 0, 1));
-        LeftLeg.transform.rotation = AnkleLeft * Quaternion.AngleAxis(-90, new Vector3(0, 0, 1));
+        //LeftUpLeg.transform.rotation = KneeLeft * Quaternion.AngleAxis(-90, new Vector3(0, 0, 1));
+        //LeftLeg.transform.rotation = AnkleLeft * Quaternion.AngleAxis(-90, new Vector3(0, 0, 1));
 
         // Set the rotation of the model 
         transform.rotation = q;
 
         // Move the position of the joints 
         var pos = body.Joints[Kinect.JointType.SpineMid].Position;
-        Ref.transform.position = new Vector3(-pos.X, pos.Y, -pos.Z);
+        //Ref.transform.position = new Vector3(-pos.X, pos.Y, -pos.Z);
     }
 
     void ShowAngles(Kinect.Body body)
@@ -649,7 +649,7 @@ public class KinectAvatar : MonoBehaviour
             double resultProbeLeft = 180.0 - Math.Abs(LeftKneeExtensionAngle - LeftKneeFlexionAngle);
             double resultProbeRight = 180.0 - Math.Abs(RightKneeExtensionAngle - RightKneeFlexionAngle);
 
-            if (resultProbeLeft > 45.0 && resultProbeRight > 45.0 && maxDeltaLeft > 0.1 && maxDeltaRight > 0.1)
+            if (resultProbeLeft > 60.0 && resultProbeRight > 60.0 && maxDeltaLeft > 0.1 && maxDeltaRight > 0.1)
             {
                 resistanceMode = false;
             } else
